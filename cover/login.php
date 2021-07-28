@@ -1,9 +1,26 @@
-<?php echo file_get_contents("html/header.html"); ?>
-    <h1>Login to the Cover System!</h1>
-    <FORM ACTION=process_login.php METHOD=POST>
-       email: <INPUT TYPE=TEXT NAME="email"><BR>
-       password: <INPUT TYPE=PASSWORD NAME="password">
-      <P><INPUT TYPE=SUBMIT VALUE="submit">
-    </FORM>
-    <br>
-<?php echo file_get_contents("html/footer.html"); ?>
+<?php
+  include_once 'header.php'
+?>
+      <section class="signup-form">
+        <h1>Login to the Cover System!</h1>
+        <form action="includes/login.inc.php" method="post">
+          <input type="text" name="email" placeholder="email...">
+          <input type="password" name="pwd" placeholder="password...">
+          <button type="submit" name="submit">Login</button>
+        </form>
+      </section>
+
+      <?php
+      if (isset($_GET["error"])) {
+        if ($_GET["error"] == "emptyinput") {
+        echo "<p>Please fill in all fields!</p>";
+        }
+        else if ($_GET["error"] == "wronglogin") {
+          echo "<p>Invalid login information!</p>";
+        }
+      }
+
+      ?>
+<?php
+  include_once 'footer.php'
+?>

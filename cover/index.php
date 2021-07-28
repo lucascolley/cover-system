@@ -1,3 +1,7 @@
-<?php echo file_get_contents("html/header.html"); ?>
-    <p>Welcome to the Cover System!</p>
-<?php echo file_get_contents("html/footer.html"); ?>
+<?php
+  include_once 'header.php'
+?>
+      <p>Welcome to the Cover System!</p>
+<?php
+  include_once 'footer.php'
+?>
