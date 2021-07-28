@@ -1,10 +1,43 @@
 <?php
 
+function emptyInputCreateUser($email, $pwd, $pwdRepeat) {
+  $result;
+  if (empty($email) || empty($pwd) || empty($pwdRepeat)) {
+    $result = true;
+  }
+  else {
+    $result = false;
+  }
+  return $result;
+}
+
+function invalidEmail($email) {
+  $result;
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $result = true;
+  }
+  else {
+    $result = false;
+  }
+  return $result;
+}
+
+function pwdMatch($pwd, $pwdRepeat) {
+  $result;
+  if ($pwd !== $pwdRepeat) {
+    $result = true;
+  }
+  else {
+    $result = false;
+  }
+  return $result;
+}
+
 function emailExists($conn, $email) {
   $sql = "SELECT * FROM users WHERE usersEmail = ?;";
   $stmt = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($stmt, $sql)) {
-    header("location: ../login.php?error=stmtfailed");
+    header("location: ../create_user.php?error=stmtfailed");
     exit();
   }
 
@@ -23,6 +56,22 @@ function emailExists($conn, $email) {
 
   mysqli_stmt_close($stmt);
   }
+
+  function createUser($conn, $email, $pwd) {
+    $sql = "INSERT INTO users (usersEmail, usersPwd) VALUES (?, ?);";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+      header("location: ../create_user.php?error=stmtfailed");
+      exit();
+    }
+
+    $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
+
+    mysqli_stmt_bind_param($stmt, "ss", $email, $hashedPwd);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../create_user.php?error=none");
+    }
 
 function emptyInputLogin($email, $pwd) {
   $result;

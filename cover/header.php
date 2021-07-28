@@ -1,3 +1,7 @@
+<?php
+  session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en-GB" dir="ltr">
   <head>
@@ -14,7 +18,8 @@
           <li><a href="index.php">Home</a></li>
           <?php
             if (isset($_SESSION["userEmail"])) {
-              echo "<li><a href='logout.php'>Log out</a></li>";
+              echo "<li><a href='create_user.php'>Create User</a></li>";
+              echo "<li><a href='includes/logout.inc.php'>Log out</a></li>";
             }
             else {
               echo "<li><a href='login.php'>Log in</a></li>";

@@ -1,7 +1,7 @@
 <?php
   include_once 'header.php'
 ?>
-      <section class="signup-form">
+      <section class="login-form">
         <h1>Login to the Cover System!</h1>
         <form action="includes/login.inc.php" method="post">
           <input type="text" name="email" placeholder="email...">
