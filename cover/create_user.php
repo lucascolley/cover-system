@@ -7,10 +7,12 @@
           if (true) {
             echo "<h1>Create a User</h1>";
             echo "<form action='includes/create_user.inc.php' method='post'>";
-            echo  "<input type='text' name='email' placeholder='email...'>";
-            echo  "<input type='password' name='pwd' placeholder='password...'>";
-            echo  "<input type='password' name='pwdrepeat' placeholder='repeat password...'>";
-            echo  "<button type='submit' name='submit'>Create User</button>";
+            echo "  <input type='text' name='email' placeholder='email...'><br>";
+            echo "  <input type='password' name='pwd' placeholder='password...'><br>";
+            echo "  <input type='password' name='pwdrepeat' placeholder='repeat password...'><br>";
+            echo "  <label for='admin'> Admin?</label>";
+            echo "  <input type='checkbox' id='admin' name='admin' value='1'><br>";
+            echo "  <button type='submit' name='submit'>Create User</button>";
             echo "</form>";
             if (isset($_GET["error"])) {
               if ($_GET["error"] == "emptyinput") {

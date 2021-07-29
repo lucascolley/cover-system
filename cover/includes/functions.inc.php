@@ -57,8 +57,8 @@ function emailExists($conn, $email) {
   mysqli_stmt_close($stmt);
   }
 
-function createUser($conn, $email, $pwd) {
-  $sql = "INSERT INTO users (usersEmail, usersPwd) VALUES (?, ?);";
+function createUser($conn, $email, $pwd, $admin) {
+  $sql = "INSERT INTO users (usersEmail, usersPwd, admin) VALUES (?, ?, ?);";
   $stmt = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($stmt, $sql)) {
     header("location: ../create_user.php?error=stmtfailed");
@@ -67,7 +67,7 @@ function createUser($conn, $email, $pwd) {
 
   $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-  mysqli_stmt_bind_param($stmt, "ss", $email, $hashedPwd);
+  mysqli_stmt_bind_param($stmt, "sss", $email, $hashedPwd, $admin);
   mysqli_stmt_execute($stmt);
   mysqli_stmt_close($stmt);
   header("location: ../create_user.php?error=none");

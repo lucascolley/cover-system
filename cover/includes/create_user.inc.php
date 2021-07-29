@@ -5,6 +5,10 @@
     $email = $_POST["email"];
     $pwd = $_POST["pwd"];
     $pwdRepeat = $_POST["pwdrepeat"];
+    $admin = $_POST["admin"];
+    if ($admin !== '1') {
+      $admin = 0;
+    }
 
     require_once 'dbh.inc.php';
     require_once 'functions.inc.php';
@@ -26,7 +30,7 @@
       exit();
     }
 
-    createUser($conn, $email, $pwd);
+    createUser($conn, $email, $pwd, $admin);
 
   }
   else {
