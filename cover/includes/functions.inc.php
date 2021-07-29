@@ -57,21 +57,21 @@ function emailExists($conn, $email) {
   mysqli_stmt_close($stmt);
   }
 
-  function createUser($conn, $email, $pwd) {
-    $sql = "INSERT INTO users (usersEmail, usersPwd) VALUES (?, ?);";
-    $stmt = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-      header("location: ../create_user.php?error=stmtfailed");
-      exit();
-    }
+function createUser($conn, $email, $pwd) {
+  $sql = "INSERT INTO users (usersEmail, usersPwd) VALUES (?, ?);";
+  $stmt = mysqli_stmt_init($conn);
+  if (!mysqli_stmt_prepare($stmt, $sql)) {
+    header("location: ../create_user.php?error=stmtfailed");
+    exit();
+  }
 
-    $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
+  $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-    mysqli_stmt_bind_param($stmt, "ss", $email, $hashedPwd);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-    header("location: ../create_user.php?error=none");
-    }
+  mysqli_stmt_bind_param($stmt, "ss", $email, $hashedPwd);
+  mysqli_stmt_execute($stmt);
+  mysqli_stmt_close($stmt);
+  header("location: ../create_user.php?error=none");
+  }
 
 function emptyInputLogin($email, $pwd) {
   $result;
@@ -102,10 +102,52 @@ function loginUser($conn, $email, $pwd) {
   else if ($checkPwd === true) {
     session_start();
     $_SESSION["userEmail"] = $emailExists["usersEmail"];
+    $_SESSION["admin"] = $emailExists["admin"];
     header("location: ../index.php");
     exit();
   }
 
+}
+
+function deleteUser($conn, $email, $pwd) {
+
+  $emailExists = emailExists($conn, $email);
+
+  if ($emailExists === false) {
+    header("location: ../delete_user.php?error=wronglogin");
+    exit();
+  }
+
+  $sql = "DELETE FROM users WHERE usersEmail=?;";
+  $stmt = mysqli_stmt_init($conn);
+  if (!mysqli_stmt_prepare($stmt, $sql)) {
+    header("location: ../delete_user.php?error=stmtfailed");
+    exit();
+  }
+
+  $pwdHashed = $emailExists["usersPwd"];
+  $checkPwd = password_verify($pwd, $pwdHashed);
+
+  if ($checkPwd === false) {
+    header("location: ../delete_user.php?error=wronglogin");
+    exit();
+  }
+
+  mysqli_stmt_bind_param($stmt, "s", $email);
+  mysqli_stmt_execute($stmt);
+  mysqli_stmt_close($stmt);
+  header("location: ../delete_user.php?error=none");
+  }
+
+function emptyInputDeleteUser($email, $pwd) {
+  $result;
+  if (empty($email) || empty($pwd)) {
+    $result = true;
+  }
+  else {
+    $result = false;
+  }
+  return $result;
 }
 
 ?>
