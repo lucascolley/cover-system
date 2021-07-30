@@ -18,6 +18,7 @@
           <li><a href="index.php">Home</a></li>
           <?php
             if (isset($_SESSION["userEmail"])) {
+              echo "<li><a href='change_pwd.php'>Change Password</a></li>";
               echo "<li><a href='includes/logout.inc.php'>Log out</a></li>";
               if ($_SESSION["admin"] !== 0) {
                 echo "<li><a href='admin_settings.php'>Admin Settings</a></li>";

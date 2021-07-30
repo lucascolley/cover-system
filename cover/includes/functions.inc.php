@@ -150,4 +150,39 @@ function emptyInputDeleteUser($email, $pwd) {
   return $result;
 }
 
+function emptyInputChangePwd($pwd, $newPwd, $newPwdRepeat) {
+  $result;
+  if (empty($pwd) || empty($newPwd) || empty($newPwdRepeat)) {
+    $result = true;
+  }
+  else {
+    $result = false;
+  }
+  return $result;
+}
+
+function changePwd($conn, $email, $pwd, $newPwd) {
+  $sql = "UPDATE users SET usersPwd=? WHERE usersEmail=?;";
+  $stmt = mysqli_stmt_init($conn);
+  if (!mysqli_stmt_prepare($stmt, $sql)) {
+    header("location: ../change_pwd.php?error=stmtfailed");
+    exit();
+  }
+
+  $pwdHashed = $emailExists["usersPwd"];
+  $checkPwd = password_verify($pwd, $pwdHashed);
+
+  if ($checkPwd === false) {
+    header("location: ../change_pwd.php?error=wronglogin");
+    exit();
+  }
+
+  $newHashedPwd = password_hash($newPwd, PASSWORD_DEFAULT);
+
+  mysqli_stmt_bind_param($stmt, "ss", $newHashedPwd, $email);
+  mysqli_stmt_execute($stmt);
+  mysqli_stmt_close($stmt);
+  header("location: ../change_pwd.php?error=none");
+}
+
 ?>
