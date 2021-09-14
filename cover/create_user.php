@@ -4,7 +4,7 @@
       <section class="create_user-form">
         <?php
         if (isset($_SESSION["userEmail"])) {
-          if ($_SESSION["admin" !== 0]) {
+          if ($_SESSION["admin"] !== 0) {
             echo "<h1>Create a User</h1>";
             echo "<form action='includes/create_user.inc.php' method='post'>";
             echo "  <input type='text' name='email' placeholder='email...'><br>";
