@@ -55,7 +55,7 @@ function emailExists($conn, $email) {
   }
 
   mysqli_stmt_close($stmt);
-  }
+}
 
 function createUser($conn, $email, $pwd, $admin) {
   $sql = "INSERT INTO users (usersEmail, usersPwd, admin) VALUES (?, ?, ?);";
@@ -162,6 +162,8 @@ function emptyInputChangePwd($pwd, $newPwd, $newPwdRepeat) {
 }
 
 function changePwd($conn, $email, $pwd, $newPwd) {
+  $emailExists = emailExists($conn, $email);
+
   $sql = "UPDATE users SET usersPwd=? WHERE usersEmail=?;";
   $stmt = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($stmt, $sql)) {
