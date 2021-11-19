@@ -70,11 +70,12 @@ def generate_staff_codes(names):
     return staff_codes
 
 
-def print_timetable(names, timetables, position):
-    print("Title:", names[-1][0])
-    print("Forename:", names[-1][1])
-    print("Surname:", names[-1][2])
-    print(timetables[-1])
+def print_timetable(names, timetables, staff_codes, position):
+    print("Title:", names[position][0])
+    print("Forename:", names[position][1])
+    print("Surname:", names[position][2])
+    print("Staff Code:", staff_codes[position])
+    print(timetables[position])
 
 
 def main():
@@ -83,9 +84,8 @@ def main():
     timetables = add_commas(timetables)
     names = names_import(timetables)
     timetables = timetables_import(timetables)
-    print_timetable(names, timetables, -1)
     staff_codes = generate_staff_codes(names)
-    print(staff_codes)
+    print_timetable(names, timetables, staff_codes, 25)
 
 
 if __name__ == '__main__':
