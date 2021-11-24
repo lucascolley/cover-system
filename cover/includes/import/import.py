@@ -1,3 +1,6 @@
+import pandas
+
+
 def add_commas(timetable):
     i = 0
     for line in timetable:
@@ -70,6 +73,24 @@ def generate_staff_codes(names):
     return staff_codes
 
 
+def write_to_csv(names, timetables, staff_codes):
+    titles = []
+    forenames = []
+    surnames = []
+    for name in names:
+        titles.append(name[0])
+        forenames.append(name[1])
+        surnames.append(name[2])
+    data = {}
+    data.update({staff_codes[0]: {}})
+    data[staff_codes[0]].update({"title": titles[0]})
+    data[staff_codes[0]].update({"forename": forenames[0]})
+    data[staff_codes[0]].update({"surname": surnames[0]})
+    data[staff_codes[0]].update({"teacher": 1})
+    dataframe = pandas.DataFrame(data=data).T
+    print(dataframe)
+
+
 def print_timetable(names, timetables, staff_codes, position):
     print("Title:", names[position][0])
     print("Forename:", names[position][1])
@@ -86,6 +107,7 @@ def main():
     timetables = timetables_import(timetables)
     staff_codes = generate_staff_codes(names)
     print_timetable(names, timetables, staff_codes, 25)
+    write_to_csv(names, timetables, staff_codes)
 
 
 if __name__ == '__main__':
