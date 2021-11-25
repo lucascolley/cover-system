@@ -73,7 +73,15 @@ def generate_staff_codes(names):
     return staff_codes
 
 
-def write_to_csv(names, timetables, staff_codes):
+def generate_emails(names):
+    emails = []
+    for name in names:
+        email = name[1] + "." + name[2] + "@st-marys.newcastle.sch.uk"
+        emails.append(email)
+    return emails
+
+
+def write_to_csv(names, timetables, staff_codes, emails):
     titles = []
     forenames = []
     surnames = []
@@ -82,21 +90,14 @@ def write_to_csv(names, timetables, staff_codes):
         forenames.append(name[1])
         surnames.append(name[2])
     data = {}
-    data.update({staff_codes[0]: {}})
-    data[staff_codes[0]].update({"title": titles[0]})
-    data[staff_codes[0]].update({"forename": forenames[0]})
-    data[staff_codes[0]].update({"surname": surnames[0]})
-    data[staff_codes[0]].update({"teacher": 1})
+    for i in range(96):
+        data.update({staff_codes[i]: {}})
+        data[staff_codes[i]].update({"email": emails[i]})
+        data[staff_codes[i]].update({"title": titles[i]})
+        data[staff_codes[i]].update({"forename": forenames[i]})
+        data[staff_codes[i]].update({"surname": surnames[i]})
     dataframe = pandas.DataFrame(data=data).T
-    print(dataframe)
-
-
-def print_timetable(names, timetables, staff_codes, position):
-    print("Title:", names[position][0])
-    print("Forename:", names[position][1])
-    print("Surname:", names[position][2])
-    print("Staff Code:", staff_codes[position])
-    print(timetables[position])
+    dataframe.to_csv('users.csv')
 
 
 def main():
@@ -106,8 +107,8 @@ def main():
     names = names_import(timetables)
     timetables = timetables_import(timetables)
     staff_codes = generate_staff_codes(names)
-    print_timetable(names, timetables, staff_codes, 25)
-    write_to_csv(names, timetables, staff_codes)
+    emails = generate_emails(names)
+    write_to_csv(names, timetables, staff_codes, emails)
 
 
 if __name__ == '__main__':
