@@ -96,7 +96,43 @@ def write_to_csv(names, timetables, staff_codes, emails):
         data[staff_codes[i]].update({"title": titles[i]})
         data[staff_codes[i]].update({"forename": forenames[i]})
         data[staff_codes[i]].update({"surname": surnames[i]})
+        j = 1
+        for periodtime in timetables[i]:
+            k = 1
+            for period in periodtime:
+                periodname = ""
+                if k < 6:
+                    periodname += "1"
+                else:
+                    periodname += "2"
+                m = k % 5
+                if m == 1:
+                    periodname += "Mon"
+                elif m == 2:
+                    periodname += "Tue"
+                elif m == 3:
+                    periodname += "Wed"
+                elif m == 4:
+                    periodname += "Thu"
+                elif m == 0:
+                    periodname += "Fri"
+                periodname += str(j)
+                data[staff_codes[i]].update({periodname: period})
+                k += 1
+            j += 1
     dataframe = pandas.DataFrame(data=data).T
+    columns = ['email', 'title', 'forename', 'surname',
+               '1Mon1', '1Mon2', '1Mon3', '1Mon4', '1Mon5', '1Mon6',
+               '1Tue1', '1Tue2', '1Tue3', '1Tue4', '1Tue5', '1Tue6',
+               '1Wed1', '1Wed2', '1Wed3', '1Wed4', '1Wed5', '1Wed6',
+               '1Thu1', '1Thu2', '1Thu3', '1Thu4', '1Thu5', '1Thu6',
+               '1Fri1', '1Fri2', '1Fri3', '1Fri4', '1Fri5', '1Fri6',
+               '2Mon1', '2Mon2', '2Mon3', '2Mon4', '2Mon5', '2Mon6',
+               '2Tue1', '2Tue2', '2Tue3', '2Tue4', '2Tue5', '2Tue6',
+               '2Wed1', '2Wed2', '2Wed3', '2Wed4', '2Wed5', '2Wed6',
+               '2Thu1', '2Thu2', '2Thu3', '2Thu4', '2Thu5', '2Thu6',
+               '2Fri1', '2Fri2', '2Fri3', '2Fri4', '2Fri5', '2Fri6']
+    dataframe = dataframe[columns]
     dataframe.to_csv('users.csv')
 
 
