@@ -58,7 +58,7 @@ function emailExists($conn, $email) {
 }
 
 function createUser($conn, $email, $pwd, $admin) {
-  $sql = "INSERT INTO users (usersEmail, usersPwd, admin) VALUES (?, ?, ?);";
+  $sql = "INSERT INTO users (usersEmail, usersPwd, usersAdmin) VALUES (?, ?, ?);";
   $stmt = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($stmt, $sql)) {
     header("location: ../create_user.php?error=stmtfailed");
@@ -102,7 +102,7 @@ function loginUser($conn, $email, $pwd) {
   else if ($checkPwd === true) {
     session_start();
     $_SESSION["userEmail"] = $emailExists["usersEmail"];
-    $_SESSION["admin"] = $emailExists["admin"];
+    $_SESSION["admin"] = $emailExists["usersAdmin"];
     header("location: ../index.php");
     exit();
   }
@@ -205,15 +205,17 @@ function importTeachers($conn) {
       $title = $user[2];
       $forename = $user[3];
       $surname = $user[4];
-      
-      $sql = "INSERT INTO usersNew(Email, Title, Forename, Surname, StaffCode)
-              VALUES (?, ?, ?, ?, ?);";
+
+      $sql = "INSERT INTO users
+      (usersEmail, usersTitle, usersForename, usersSurname, usersStaffCode)
+      VALUES (?, ?, ?, ?, ?);";
       $stmt = mysqli_stmt_init($conn);
       if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../import_teachers.php?error=stmtfailed");
         exit();
       }
-      mysqli_stmt_bind_param($stmt, "sssss", $email, $title, $forename, $surname, $staffCode);
+      mysqli_stmt_bind_param($stmt, "sssss",
+      $email, $title, $forename, $surname, $staffCode);
       mysqli_stmt_execute($stmt);
       mysqli_stmt_close($stmt);
     }

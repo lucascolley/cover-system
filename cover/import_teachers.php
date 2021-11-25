@@ -3,7 +3,7 @@
 ?>
       <section class="import_teachers-form">
         <h1>Import Teachers</h1>
-        <form action="includes/import_teachers.php" method="post">
+        <form action="includes/import_teachers.inc.php" method="post">
           <button type="submit" name="submit">Import Teachers</button>
         </form>
         <?php
