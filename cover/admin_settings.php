@@ -6,6 +6,7 @@
         if (isset($_SESSION["userEmail"])) {
           echo "<a href='create_user.php' class='button'>Create User</a>";
           echo "<a href='delete_user.php' class='button'>Delete User</a>";
+          echo "<a href='import_teachers.php' class='button'>Import Teachers</a>";
         }
         else {
           header("location: ./login.php");

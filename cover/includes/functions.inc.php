@@ -187,4 +187,38 @@ function changePwd($conn, $email, $pwd, $newPwd) {
   header("location: ../change_pwd.php?error=none");
 }
 
+function importTeachers($conn) {
+  $file = fopen("import/users.csv","r");
+  $users = [];
+  $x = 0;
+  while(! feof($file)) {
+    $users[$x] = fgetcsv($file);
+    $x++;
+  }
+  fclose($file);
+
+  array_shift($users);
+  foreach($users as $user) {
+    if ($user[0] != "") {
+      $staffCode = $user[0];
+      $email = $user[1];
+      $title = $user[2];
+      $forename = $user[3];
+      $surname = $user[4];
+      
+      $sql = "INSERT INTO usersNew(Email, Title, Forename, Surname, StaffCode)
+              VALUES (?, ?, ?, ?, ?);";
+      $stmt = mysqli_stmt_init($conn);
+      if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../import_teachers.php?error=stmtfailed");
+        exit();
+      }
+      mysqli_stmt_bind_param($stmt, "sssss", $email, $title, $forename, $surname, $staffCode);
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_close($stmt);
+    }
+  }
+  header("location: ../import_teachers.php?error=none");
+}
+
 ?>
