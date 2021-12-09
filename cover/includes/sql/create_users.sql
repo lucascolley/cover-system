@@ -7,4 +7,4 @@ CREATE TABLE users (
     usersStaffCode varchar(3),
     usersAdmin tinyint(1) DEFAULT 0,
     usersTeacher tinyint(1) DEFAULT 1
-)
+);
