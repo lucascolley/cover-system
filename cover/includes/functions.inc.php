@@ -205,7 +205,6 @@ function importTeachers($conn) {
       $title = $user[2];
       $forename = $user[3];
       $surname = $user[4];
-
       $sql = "INSERT INTO users
       (usersEmail, usersTitle, usersForename, usersSurname, usersStaffCode)
       VALUES (?, ?, ?, ?, ?);";
@@ -216,6 +215,24 @@ function importTeachers($conn) {
       }
       mysqli_stmt_bind_param($stmt, "sssss",
       $email, $title, $forename, $surname, $staffCode);
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_close($stmt);
+      $lessons = [];
+      $user = array_slice($user, 5);
+      foreach($user as $period) {
+        array_push($lessons, $period);
+      }
+      $sql = "INSERT INTO #
+      (#, #, #, #, #, #, #, #, #, #)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      $stmt = mysqli_stmt_init($conn);
+      if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../import_teachers.php?error=stmtfailed");
+        exit();
+      }
+      mysqli_stmt_bind_param($stmt, "ssssssssss",
+      $lessons[0], $lessons[1], $lessons[2], $lessons[3], $lessons[4],
+      $lessons[5], $lessons[6], $lessons[7], $lessons[8], $lessons[9]);
       mysqli_stmt_execute($stmt);
       mysqli_stmt_close($stmt);
     }
