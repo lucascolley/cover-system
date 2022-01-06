@@ -55,10 +55,10 @@ function emailExists($conn, $email) {
   }
 
   mysqli_stmt_close($stmt);
-}
+  }
 
 function createUser($conn, $email, $pwd, $admin) {
-  $sql = "INSERT INTO users (usersEmail, usersPwd, usersAdmin) VALUES (?, ?, ?);";
+  $sql = "INSERT INTO users (usersEmail, usersPwd, admin) VALUES (?, ?, ?);";
   $stmt = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($stmt, $sql)) {
     header("location: ../create_user.php?error=stmtfailed");
@@ -102,7 +102,7 @@ function loginUser($conn, $email, $pwd) {
   else if ($checkPwd === true) {
     session_start();
     $_SESSION["userEmail"] = $emailExists["usersEmail"];
-    $_SESSION["admin"] = $emailExists["usersAdmin"];
+    $_SESSION["admin"] = $emailExists["admin"];
     header("location: ../index.php");
     exit();
   }
@@ -162,8 +162,6 @@ function emptyInputChangePwd($pwd, $newPwd, $newPwdRepeat) {
 }
 
 function changePwd($conn, $email, $pwd, $newPwd) {
-  $emailExists = emailExists($conn, $email);
-
   $sql = "UPDATE users SET usersPwd=? WHERE usersEmail=?;";
   $stmt = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -197,7 +195,8 @@ function importTeachers($conn) {
   }
   fclose($file);
 
-  array_shift($users);
+  $columns = array_shift($users);
+  $lessonID = 1;
   foreach($users as $user) {
     if ($user[0] != "") {
       $staffCode = $user[0];
@@ -222,19 +221,41 @@ function importTeachers($conn) {
       foreach($user as $period) {
         array_push($lessons, $period);
       }
-      $sql = "INSERT INTO #
-      (#, #, #, #, #, #, #, #, #, #)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-      $stmt = mysqli_stmt_init($conn);
-      if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("location: ../import_teachers.php?error=stmtfailed");
-        exit();
+      $i = 5;
+      foreach ($lessons as $lesson) {
+        $time = $columns[$i];
+        $week = $time[0];
+        $day = $time[1] . $time[2] . $time[3];
+        $period = $time[4];
+        $lesson = explode(",", $lesson);
+        $class_code = $lesson[0];
+        $class_code = str_replace("'", '', $class_code);
+        $class_code = str_replace("[", '', $class_code);
+        $class_code = str_replace("]", '', $class_code);
+        $class_code = substr($class_code, 0, -4);
+        if ($class_code == '') {
+          $class_code = 'free';
+        }
+        $room = $lesson[1];
+        $room = str_replace("'", '', $room);
+        $room = str_replace("]", '', $room);
+        $room = str_replace(" ", '', $room);
+        $room = substr($room, 0, 3);
+        $sql = "INSERT INTO lessons
+        (lessonID, teacherEmail, classCode, week, day, period, room)
+        VALUES (?, ?, ?, ?, ?, ?, ?);";
+        $stmt = mysqli_stmt_init($conn);
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+          header("location: ../import_teachers.php?error=stmtfailed");
+          exit();
+        }
+        mysqli_stmt_bind_param($stmt, "sssssss",
+        $lessonID, $email, $class_code, $week, $day, $period, $room);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        $i++;
+        $lessonID++;
       }
-      mysqli_stmt_bind_param($stmt, "ssssssssss",
-      $lessons[0], $lessons[1], $lessons[2], $lessons[3], $lessons[4],
-      $lessons[5], $lessons[6], $lessons[7], $lessons[8], $lessons[9]);
-      mysqli_stmt_execute($stmt);
-      mysqli_stmt_close($stmt);
     }
   }
   header("location: ../import_teachers.php?error=none");
