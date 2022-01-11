@@ -1,2 +1,5 @@
 .DS_Store
 staffTT.csv
+composer.json
+composer.lock
+vendor
