@@ -1,26 +1,26 @@
 body {
-	width: 70%;
-	margin: auto;
-	margin-top: 110px;
-	margin-bottom: 110px;
-	margin-right: 160px;
-	margin-left: 90px;
-	background-color: lightcyan;
-	color: palevioletred;
-	font-family: verdana;
-	font-size: 100%
+  width: 70%;
+  margin: auto;
+  margin-top: 110px;
+  margin-bottom: 110px;
+  margin-right: 160px;
+  margin-left: 90px;
+  background-color: lightcyan;
+  color: palevioletred;
+  font-family: verdana;
+  font-size: 100%
 }
 
 h2 {
-	color: darkred;
-	font-family: indigo;
-	font-size: 100%;
+  color: darkred;
+  font-family: indigo;
+  font-size: 100%;
 }
 
 h1 {
-	color: darkred;
-	font-family: indigo;
-	font-size: 100%;
+  color: darkred;
+  font-family: indigo;
+  font-size: 100%;
 }
 
 a:link {
@@ -39,9 +39,7 @@ a:active {
   color: teal;
 }
 
-#navigation {
-
-}
+#navigation {}
 
 p {
   font-size: 120%;
@@ -75,7 +73,7 @@ li a:hover {
 }
 
 .button {
-	background-color: #1c87c9;
+  background-color: #1c87c9;
   border: none;
   color: white;
   padding: 20px 34px;
