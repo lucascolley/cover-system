@@ -1,24 +1,19 @@
 <?php
 
   if (isset($_POST["submit"])) {
+      $email = $_POST["email"];
+      $pwd = $_POST["pwd"];
 
-    $email = $_POST["email"];
-    $pwd = $_POST["pwd"];
+      require_once 'dbh.inc.php';
+      require_once 'functions.inc.php';
 
-    require_once 'dbh.inc.php';
-    require_once 'functions.inc.php';
+      if (emptyInputDeleteUser($email, $pwd) !== false) {
+          header("location: ../delete_user.php?error=emptyinput");
+          exit();
+      }
 
-    if (emptyInputDeleteUser($email, $pwd) !== false) {
-      header("location: ../delete_user.php?error=emptyinput");
+      deleteUser($conn, $email, $pwd);
+  } else {
+      header("location: ../delete_user.php");
       exit();
-    }
-
-    deleteUser($conn, $email, $pwd);
-
   }
-  else {
-    header("location: ../delete_user.php");
-    exit();
-  }
-
-?>

@@ -15,21 +15,18 @@
           echo "</form>";
           echo "</section>";
 
-        if (isset($_GET["error"])) {
-          if ($_GET["error"] == "emptyinput") {
-          echo "<p>Please fill in all fields!</p>";
+          if (isset($_GET["error"])) {
+              if ($_GET["error"] == "emptyinput") {
+                  echo "<p>Please fill in all fields!</p>";
+              } elseif ($_GET["error"] == "passwordmismatch") {
+                  echo "<p>Repeat Password does not match!</p>";
+              } elseif ($_GET["error"] == "wronglogin") {
+                  echo "<p>Incorrect Password!</p>";
+              }
           }
-          else if ($_GET["error"] == "passwordmismatch") {
-            echo "<p>Repeat Password does not match!</p>";
-          }
-          else if ($_GET["error"] == "wronglogin") {
-            echo "<p>Incorrect Password!</p>";
-          }
-        }
-      }
-      else {
-        header("location: ./login.php");
-        exit();
+      } else {
+          header("location: ./login.php");
+          exit();
       }
       ?>
 <?php

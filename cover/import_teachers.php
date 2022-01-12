@@ -8,12 +8,11 @@
         </form>
         <?php
         if (isset($_GET["error"])) {
-          if ($_GET["error"] == "stmtfailed") {
-            echo "<p>Statement Failed</p>";
-          }
-          else if ($_GET["error"] == "none") {
-            echo "<p>Teachers imported successfully!</p>";
-          }
+            if ($_GET["error"] == "stmtfailed") {
+                echo "<p>Statement Failed</p>";
+            } elseif ($_GET["error"] == "none") {
+                echo "<p>Teachers imported successfully!</p>";
+            }
         }
         ?>
       </section>

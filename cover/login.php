@@ -12,12 +12,11 @@
 
       <?php
       if (isset($_GET["error"])) {
-        if ($_GET["error"] == "emptyinput") {
-        echo "<p>Please fill in all fields!</p>";
-        }
-        else if ($_GET["error"] == "wronglogin") {
-          echo "<p>Invalid login information!</p>";
-        }
+          if ($_GET["error"] == "emptyinput") {
+              echo "<p>Please fill in all fields!</p>";
+          } elseif ($_GET["error"] == "wronglogin") {
+              echo "<p>Invalid login information!</p>";
+          }
       }
 
       ?>
