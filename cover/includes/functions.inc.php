@@ -277,4 +277,19 @@ function importTeachers($conn)
         }
     }
     header("location: ../import_teachers.php?error=none");
+
+
 }
+
+function emptyInputDate($date)
+{
+    $result;
+    if (empty($date)) {
+        $result = true;
+    } else {
+        $result = false;
+    }
+    return $result;
+}
+
+?>
