@@ -1,3 +1,4 @@
-CREATE TABLE covers (coverDate date PRIMARY KEY NOT NULL,
-lessonsID INT PRIMARY KEY NOT NULL,
-coverTeacherCode VARCHAR(3) NOT NULL);
+CREATE TABLE covers (coverDate date NOT NULL,
+lessonID INT NOT NULL,
+coverTeacherCode VARCHAR(3) NOT NULL,
+PRIMARY KEY (coverDate, lessonID));
