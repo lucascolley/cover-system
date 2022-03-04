@@ -1,5 +1,5 @@
 CREATE TABLE absences (staffCode VARCHAR(3) NOT NULL,
-absenceDate date NOT NULL,
+absenceDate DATE NOT NULL,
 p1 TINYINT(1) DEFAULT 1,
 p2 TINYINT(1) DEFAULT 1,
 p3 TINYINT(1) DEFAULT 1,
