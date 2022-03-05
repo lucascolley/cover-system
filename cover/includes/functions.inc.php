@@ -109,12 +109,12 @@ function loginUser($conn, $email, $pwd)
     }
 }
 
-function deleteUser($conn, $email, $pwd)
+function deleteUser($conn, $userEmail, $adminEmail, $pwd)
 {
-    $emailExists = emailExists($conn, $email);
+    $emailExists = emailExists($conn, $userEmail);
 
     if ($emailExists === false) {
-        header("location: ../delete_user.php?error=wronglogin");
+        header("location: ../delete_user.php?error=nouser");
         exit();
     }
 
@@ -125,6 +125,7 @@ function deleteUser($conn, $email, $pwd)
         exit();
     }
 
+    $emailExists = emailExists($conn, $adminEmail);
     $pwdHashed = $emailExists["usersPwd"];
     $checkPwd = password_verify($pwd, $pwdHashed);
 
@@ -133,7 +134,7 @@ function deleteUser($conn, $email, $pwd)
         exit();
     }
 
-    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_bind_param($stmt, "s", $userEmail);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../delete_user.php?error=none");
