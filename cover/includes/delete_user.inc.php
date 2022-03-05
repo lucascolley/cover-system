@@ -5,6 +5,11 @@
       $adminEmail = $_POST["adminEmail"];
       $pwd = $_POST["pwd"];
 
+      if ($userEmail == $adminEmail) {
+        header("location: ../delete_user.php?error=selfdelete");
+        exit();
+      }
+
       require_once 'dbh.inc.php';
       require_once 'functions.inc.php';
 

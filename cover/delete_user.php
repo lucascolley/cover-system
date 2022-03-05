@@ -15,6 +15,8 @@
         if (isset($_GET["error"])) {
             if ($_GET["error"] == "emptyinput") {
                 echo "<p>Please fill in all fields!</p>";
+            } elseif ($_GET["error"] == "selfdelete") {
+                echo "<p>You cannot delete your own account!</p>";
             } elseif ($_GET["error"] == "nouser") {
                 echo "<p>No user matches that email!</p>";
             } elseif ($_GET["error"] == "wronglogin") {
