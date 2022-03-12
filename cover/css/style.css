@@ -6,7 +6,7 @@ body {
   margin-right: 160px;
   margin-left: 90px;
   background-color: lightcyan;
-  color: black;
+  color: dimgrey;
   font-family: verdana;
   font-size: 100%
 }
@@ -14,7 +14,7 @@ body {
 h2 {
   color: darkred;
   font-family: indigo;
-  font-size: 100%;
+  font-size: 130%;
 }
 
 h1 {
@@ -24,11 +24,7 @@ h1 {
 }
 
 a:link {
-  color: gray;
-}
-
-a:visited {
-  color: green;
+  color: white;
 }
 
 a:hover {
@@ -36,14 +32,14 @@ a:hover {
 }
 
 a:active {
-  color: teal;
+  color: pink;
 }
 
 #navigation {}
 
 p {
-  font-size: 120%;
-  color: dimgray;
+  font-size: 130%;
+  color: black;
 }
 
 ul {
