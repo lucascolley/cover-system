@@ -293,4 +293,31 @@ function emptyInputDate($date)
     return $result;
 }
 
+function getTeachers($conn)
+{
+  $sql = "SELECT `usersTitle`, `usersForename`, `usersSurname`, `usersStaffCode`
+          FROM `users` WHERE `usersTeacher`=1 AND `usersEmail`<>'teacher';";
+  $stmt = mysqli_stmt_init($conn);
+  if (!mysqli_stmt_prepare($stmt, $sql)) {
+      header("location: ../cover.php?error=stmtfailed");
+      exit();
+  }
+
+  mysqli_stmt_execute($stmt);
+
+  $resultData = mysqli_stmt_get_result($stmt);
+  $teachers = array();
+  while ($row = mysqli_fetch_assoc($resultData)) {
+    $teacher = array();
+    $teacher[] = $row["usersStaffCode"];
+    $teacher[] = $row["usersTitle"];
+    $teacher[] = $row["usersForename"];
+    $teacher[] = $row["usersSurname"];
+    $teachers[] = $teacher;
+  }
+  return $teachers;
+
+  mysqli_stmt_close($stmt);
+}
+
 ?>
