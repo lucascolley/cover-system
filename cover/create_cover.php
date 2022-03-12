@@ -57,6 +57,21 @@
                         });
                       });
                     });
+                    $(function() {
+                        $( "#but3" ).click(function()
+                        {
+                          $("#listbox2 option").each(function()
+                          {
+                            $(this).remove().appendTo("#listbox1");
+                            $("#listbox1").append($("#listbox1 option")
+                                              .remove().sort(function(a, b) {
+                                var at = $(a).text(),
+                                    bt = $(b).text();
+                                return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+                            }));
+                          });
+                        });
+                      });
                   </script>
                 </head>
                 <table border="1">
@@ -70,8 +85,9 @@
                       <select id="listbox1" multiple="multiple" size="10"></select>
                     </td>
                     <td>
-                      <input type="button" id="but1" value=">>"/>
-                      <input type="button" id="but2" value="<<"/>
+                      <input type="button" id="but1" value=">"/>
+                      <input type="button" id="but2" value="<"/>
+                      <input type="button" id="but3" value="<<<"/>
                     </td>
                     <td>
                       <select id="listbox2" multiple="multiple" size="10"></select>
