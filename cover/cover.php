@@ -5,7 +5,6 @@
         <?php
         if (isset($_SESSION["userEmail"])) {
             if ($_SESSION["admin"] !== 0) { ?>
-              <html lang="en">
               <h1>Create Cover for Day</h1>
               <head>
                 <meta charset="utf-8">
@@ -26,7 +25,6 @@
                   <button type='submit' name='submit'>Select Cover Lessons</button>
                 </form>
               </body>
-              </html>
 
               <?php
               if (isset($_GET["error"])) {

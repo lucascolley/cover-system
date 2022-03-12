@@ -6,7 +6,7 @@ body {
   margin-right: 160px;
   margin-left: 90px;
   background-color: lightcyan;
-  color: palevioletred;
+  color: black;
   font-family: verdana;
   font-size: 100%
 }
@@ -20,7 +20,7 @@ h2 {
 h1 {
   color: darkred;
   font-family: indigo;
-  font-size: 100%;
+  font-size: 150%;
 }
 
 a:link {
@@ -83,4 +83,24 @@ li a:hover {
   font-size: 20px;
   margin: 4px 2px;
   cursor: pointer;
+}
+
+table {
+  font-size: 16px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+table td, table th {
+    text-align: left;
+    padding: 8px;
+}
+
+table th {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    background-color: #04AA6D;
+    color: white;
 }
