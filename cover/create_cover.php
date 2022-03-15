@@ -20,6 +20,15 @@
                 <head>
                   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
                   <script>
+                  function selectAll()
+                  {
+                      selectBox = document.getElementById("listbox2");
+
+                      for (var i = 0; i < selectBox.options.length; i++)
+                      {
+                           selectBox.options[i].selected = true;
+                      }
+                  }
                   $(function() {
                     var teachers = <?php echo json_encode($teachers); ?>;
                     $.each(teachers, function (i, teacher) {
@@ -74,26 +83,29 @@
                       });
                   </script>
                 </head>
-                <table border="1">
-                  <tr>
-                    <th>Present Teachers</th>
-                    <th>Transfer Selection(s)</th>
-                    <th>Absent Teachers</th>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select id="listbox1" multiple="multiple" size="10"></select>
-                    </td>
-                    <td>
-                      <input type="button" id="but1" value=">"/>
-                      <input type="button" id="but2" value="<"/>
-                      <input type="button" id="but3" value="<<<"/>
-                    </td>
-                    <td>
-                      <select id="listbox2" multiple="multiple" size="10"></select>
-                    </td>
-                  </tr>
-                </table>
+                <form action="includes/create_cover.inc.php" method="post">
+                  <table border="1">
+                    <tr>
+                      <th>Present Teachers</th>
+                      <th>Transfer Selection(s)</th>
+                      <th>Absent Teachers</th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <select id="listbox1" multiple="multiple" size="10"></select>
+                      </td>
+                      <td>
+                        <input type="button" id="but1" value=">"/>
+                        <input type="button" id="but2" value="<"/>
+                        <input type="button" id="but3" value="<<<"/>
+                        <button type="submit" name="submit" value=Submit onclick="selectAll();">Submit</button>
+                      </td>
+                      <td>
+                        <select id="listbox2" name="selectName[]" multiple="multiple" size="10"></select>
+                      </td>
+                    </tr>
+                  </table>
+                </form>
                 <?php
               } else {
                 header("location: ./cover.php");
