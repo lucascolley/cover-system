@@ -3,6 +3,7 @@
 ?>
       <section class="create_cover-form">
         <?php
+        // Server-side scripting using request and response objects
         if (isset($_SESSION["userEmail"])) {
             if ($_SESSION["admin"] !== 0) {
               if (isset($_GET["error"])) {

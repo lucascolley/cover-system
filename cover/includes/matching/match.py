@@ -1,3 +1,5 @@
+# Complex user defined algorithm
+
 def score(lessons, teachers):  # for each lesson, give each teacher a score
     lessons_scores = {}
     for lesson in lessons:

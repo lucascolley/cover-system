@@ -1,5 +1,7 @@
 <?php
 
+// Complex client-server model
+
 $serverName = "localhost";
 $dbUsername = "root";
 $serverName = "";

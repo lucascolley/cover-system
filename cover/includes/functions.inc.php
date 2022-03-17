@@ -35,6 +35,7 @@ function pwdMatch($pwd, $pwdRepeat)
 
 function emailExists($conn, $email)
 {
+    // Parameterised SQL
     $sql = "SELECT * FROM users WHERE usersEmail = ?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -59,6 +60,7 @@ function emailExists($conn, $email)
 
 function createUser($conn, $email, $pwd, $admin)
 {
+    // Parameterised SQL
     $sql = "INSERT INTO users (usersEmail, usersPwd, admin) VALUES (?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -66,6 +68,7 @@ function createUser($conn, $email, $pwd, $admin)
         exit();
     }
 
+    // Hashing
     $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
     mysqli_stmt_bind_param($stmt, "sss", $email, $hashedPwd, $admin);
@@ -118,6 +121,7 @@ function deleteUser($conn, $userEmail, $adminEmail, $pwd)
         exit();
     }
 
+    // Parameterised SQL
     $sql = "DELETE FROM users WHERE usersEmail=?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -164,6 +168,7 @@ function emptyInputChangePwd($pwd, $newPwd, $newPwdRepeat)
 
 function changePwd($conn, $email, $pwd, $newPwd)
 {
+    // Parameterised SQL
     $sql = "UPDATE users SET usersPwd=? WHERE usersEmail=?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -207,6 +212,7 @@ function importTeachers($conn)
             $title = $user[2];
             $forename = $user[3];
             $surname = $user[4];
+            // Parameterised SQL
             $sql = "INSERT INTO users
       (usersEmail, usersTitle, usersForename, usersSurname, usersStaffCode)
       VALUES (?, ?, ?, ?, ?);";
@@ -251,6 +257,7 @@ function importTeachers($conn)
                 $room = str_replace("]", '', $room);
                 $room = str_replace(" ", '', $room);
                 $room = substr($room, 0, 3);
+                // Parameterised SQL
                 $sql = "INSERT INTO lessons
         (lessonID, teacherEmail, classCode, week, day, period, room)
         VALUES (?, ?, ?, ?, ?, ?, ?);";

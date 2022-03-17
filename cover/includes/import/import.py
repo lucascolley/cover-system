@@ -1,3 +1,5 @@
+# CSV Handling, writing/reading
+
 import pandas
 
 
@@ -90,6 +92,7 @@ def write_to_csv(names, timetables, staff_codes, emails):
         forenames.append(name[1])
         surnames.append(name[2])
     data = {}
+    # Multi-dimensional arrays, dictionaries
     for i in range(96):
         data.update({staff_codes[i]: {}})
         data[staff_codes[i]].update({"email": emails[i]})

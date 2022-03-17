@@ -1,3 +1,5 @@
+# Writing/reading
+
 def anonymise(timetable, names):
     for i in range(96):
         timetable[21 * i + 1] = "Timetable - " + names[i]
