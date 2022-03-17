@@ -6,17 +6,16 @@
         // Server-side scripting using request and response objects
         if (isset($_SESSION["userEmail"])) {
             if ($_SESSION["admin"] !== 0) {
-              if (isset($_GET["error"])) {
-                  if ($_GET["error"] == "emptyinput") {
-                      echo "<p>Please fill in all fields!</p>";
-                  }
-              }
-              if (isset($_GET["date"])) {
-                $date = $_GET["date"];
-                require_once 'includes/dbh.inc.php';
-                require_once 'includes/functions.inc.php';
-                $teachers = getTeachers($conn);
-                ?>
+                if (isset($_GET["error"])) {
+                    if ($_GET["error"] == "emptyinput") {
+                        echo "<p>Please fill in all fields!</p>";
+                    }
+                }
+                if (isset($_GET["date"])) {
+                    $date = $_GET["date"];
+                    require_once 'includes/dbh.inc.php';
+                    require_once 'includes/functions.inc.php';
+                    $teachers = getTeachers($conn); ?>
                 <h1>Create Cover for Day</h1>
                 <head>
                   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -108,9 +107,9 @@
                   </table>
                 </form>
                 <?php
-              } else {
-                header("location: ./cover.php");
-              }
+                } else {
+                    header("location: ./cover.php");
+                }
             } else {
                 header("location: ./index.php");
                 exit();
