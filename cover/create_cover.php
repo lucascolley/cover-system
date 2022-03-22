@@ -79,6 +79,7 @@
                   </script>
                 </head>
                 <form action="includes/create_cover.inc.php" method="post">
+                  <input type="hidden" id="date" name="date" value=<?php echo('"' . $date . '"');?>>
                   <table border="1">
                     <tr>
                       <th>Present Teachers</th>
