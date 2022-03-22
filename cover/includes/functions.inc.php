@@ -232,6 +232,7 @@ function importTeachers($conn)
             );
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
+
             $lessons = [];
             $user = array_slice($user, 5);
             foreach ($user as $period) {
@@ -323,4 +324,25 @@ function getTeachers($conn)
     return $teachers;
 
     mysqli_stmt_close($stmt);
+
+}
+
+function updateAbsences($conn, $date, $absentTeachers)
+{
+    $day = substr($date, 0, 2);
+    $month = substr($date, 3, 2);
+    $year = substr($date, 6);
+    $date = $year . "-" . $month . "-" . $day;
+    foreach ($absentTeachers as $teacher) {
+      $staffCode = substr($teacher, 0, 3);
+      $sql = "INSERT INTO absences (staffCode, absenceDate) VALUES (?, ?);";
+      $stmt = mysqli_stmt_init($conn);
+      if (!mysqli_stmt_prepare($stmt, $sql)) {
+          header("location: ../cover.php?error=stmtfailed");
+          exit();
+      }
+      mysqli_stmt_bind_param($stmt, "ss", $staffCode, $date);
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_close($stmt);
+    }
 }
