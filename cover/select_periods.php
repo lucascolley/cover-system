@@ -12,20 +12,30 @@
                 <head>
                 </head>
                 <?php
+                // get array of absent teachers
+                require_once 'includes/dbh.inc.php';
+                require_once 'includes/functions.inc.php';
+                $absentTeachers = getAbsences($conn, $date);
+                print_r($absentTeachers);
+
                 $cols = 7;
 
-                $output = "<table border='1'>\n<tr>\n<th>Absent Teachers</th>\n";
+                $output = "<form action='includes/select_periods.inc.php' method='post'>";
+                $output .= "<table border='1'>\n<tr>\n<th>Absent Teachers</th>\n";
                 $output .= "<th>P1</th>\n<th>P2</th>\n<th>P3</th>\n<th>P4</th>\n";
                 $output .= "<th>P5</th>\n<th>P6</th>\n</tr>";
 
                 $period_count = 0;
 
-                for ($i = 0; $i < count($your_array); $i++) {
+                for ($i = 0; $i < count($absentTeachers); $i++) {
+                    $teacherName = $absentTeachers[i][0];
                     if ($period_count == 0) {
                         $output .= "<tr>\n<td>" . $teacherName . "</td>\n";
                     }
                     else {
                       $period = "p" . $period_count;
+                      // pre-check boxes where absent in database
+                      $checked = " checked";
                       $output .= "<input type='checkbox' id=" . $period . " name= " . $period . " value=" . $period . ">\n";
                     }
 
@@ -33,13 +43,14 @@
 
                     // end the row if we've generated the expected number of columns
                     // or if we're at the end of the array
-                    if ($period_count == $cols || $i == (count($your_array) - 1)) {
+                    if ($period_count == $cols || $i == (count($absentTeachers) - 1)) {
                         $output .= "</tr>\n";
                         $period_count = 0;
                     }
                 }
 
-                $output .= "</table>\n";
+                $output .= "</table>\n</form>\n";
+                echo $output
                 ?>
                 <form action="includes/select_periods.inc.php" method="post">
                   <table border="1">
@@ -74,6 +85,7 @@
                       <td>
                         <input type="checkbox" id="p6" name="p6" value="p6">
                       </td>
+                    </tr>
                   </table>
                 </form>
                 <?php
