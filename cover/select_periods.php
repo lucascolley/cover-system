@@ -8,11 +8,72 @@
                 if (isset($_GET["date"])) {
                     $date = $_GET["date"];
                     ?>
-                <h1>Select Absent Periods</h1>
+                <h1>Tick Boxes for Absent Periods</h1>
                 <head>
                 </head>
-                <form action="2" method="post">
+                <?php
+                $cols = 7;
+
+                $output = "<table border='1'>\n<tr>\n<th>Absent Teachers</th>\n";
+                $output .= "<th>P1</th>\n<th>P2</th>\n<th>P3</th>\n<th>P4</th>\n";
+                $output .= "<th>P5</th>\n<th>P6</th>\n</tr>";
+
+                $period_count = 0;
+
+                for ($i = 0; $i < count($your_array); $i++) {
+                    if ($period_count == 0) {
+                        $output .= "<tr>\n<td>" . $teacherName . "</td>\n";
+                    }
+                    else {
+                      $period = "p" . $period_count;
+                      $output .= "<input type='checkbox' id=" . $period . " name= " . $period . " value=" . $period . ">\n";
+                    }
+
+                    $period_count++;
+
+                    // end the row if we've generated the expected number of columns
+                    // or if we're at the end of the array
+                    if ($period_count == $cols || $i == (count($your_array) - 1)) {
+                        $output .= "</tr>\n";
+                        $period_count = 0;
+                    }
+                }
+
+                $output .= "</table>\n";
+                ?>
+                <form action="includes/select_periods.inc.php" method="post">
                   <table border="1">
+                    <tr>
+                      <th>Absent Teachers</th>
+                      <th>P1</th>
+                      <th>P2</th>
+                      <th>P3</th>
+                      <th>P4</th>
+                      <th>P5</th>
+                      <th>P6</th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <!--teacher name-->
+                      </td>
+                      <td>
+                        <input type="checkbox" id="p1" name="p1" value="p1">
+                      </td>
+                      <td>
+                        <input type="checkbox" id="p2" name="p2" value="p2">
+                      </td>
+                      <td>
+                        <input type="checkbox" id="p3" name="p3" value="p3">
+                      </td>
+                      <td>
+                        <input type="checkbox" id="p4" name="p4" value="p4">
+                      </td>
+                      <td>
+                        <input type="checkbox" id="p5" name="p5" value="p5">
+                      </td>
+                      <td>
+                        <input type="checkbox" id="p6" name="p6" value="p6">
+                      </td>
                   </table>
                 </form>
                 <?php
