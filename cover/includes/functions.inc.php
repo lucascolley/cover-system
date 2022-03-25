@@ -354,7 +354,7 @@ function getAbsences($conn, $date)
   $year = substr($date, 6);
   $date = $year . "-" . $month . "-" . $day;
   $sql = "SELECT staffCode, p1, p2, p3, p4, p5, p6 FROM absences
-          WHERE absenceDate=" . $date . ";";
+          WHERE absenceDate='" . $date . "';";
   $stmt = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($stmt, $sql)) {
       header("location: ../cover.php?error=stmtfailed");
@@ -369,7 +369,7 @@ function getAbsences($conn, $date)
       $teacher = array();
       $staffCode = $row["staffCode"];
       $sql = "SELECT usersTitle, usersForename, usersSurname FROM users
-              WHERE usersStaffCode=" . $staffCode . ";";
+              WHERE usersStaffCode='" . $staffCode . "';";
       $stmt = mysqli_stmt_init($conn);
       if (!mysqli_stmt_prepare($stmt, $sql)) {
           header("location: ../cover.php?error=stmtfailed");
@@ -380,7 +380,8 @@ function getAbsences($conn, $date)
       $resultData2 = mysqli_stmt_get_result($stmt);
       mysqli_stmt_close($stmt);
       $row2 = mysqli_fetch_assoc($resultData2);
-      $name = $row2["usersTitle"] . $row2["usersForename"] . $row2["usersSurname"] . $staffCode;
+      $name = $row2["usersTitle"] . " " . $row2["usersForename"] . " ";
+      $name .= $row2["usersSurname"] . " " . $staffCode;
       $teacher[] = $name;
       $teacher[] = $row["p1"];
       $teacher[] = $row["p2"];
@@ -390,6 +391,7 @@ function getAbsences($conn, $date)
       $teacher[] = $row["p6"];
       $absentTeachers[] = $teacher;
   }
+
   return $absentTeachers;
 
 }
