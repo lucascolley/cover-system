@@ -324,7 +324,6 @@ function getTeachers($conn)
     return $teachers;
 
     mysqli_stmt_close($stmt);
-
 }
 
 function updateAbsences($conn, $date, $absentTeachers)
@@ -334,64 +333,63 @@ function updateAbsences($conn, $date, $absentTeachers)
     $year = substr($date, 6);
     $date = $year . "-" . $month . "-" . $day;
     foreach ($absentTeachers as $teacher) {
-      $staffCode = substr($teacher, 0, 3);
-      $sql = "INSERT INTO absences (staffCode, absenceDate) VALUES (?, ?);";
-      $stmt = mysqli_stmt_init($conn);
-      if (!mysqli_stmt_prepare($stmt, $sql)) {
-          header("location: ../cover.php?error=stmtfailed");
-          exit();
-      }
-      mysqli_stmt_bind_param($stmt, "ss", $staffCode, $date);
-      mysqli_stmt_execute($stmt);
-      mysqli_stmt_close($stmt);
+        $staffCode = substr($teacher, 0, 3);
+        $sql = "INSERT INTO absences (staffCode, absenceDate) VALUES (?, ?);";
+        $stmt = mysqli_stmt_init($conn);
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: ../cover.php?error=stmtfailed");
+            exit();
+        }
+        mysqli_stmt_bind_param($stmt, "ss", $staffCode, $date);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
     }
 }
 
 function getAbsences($conn, $date)
 {
-  $day = substr($date, 0, 2);
-  $month = substr($date, 3, 2);
-  $year = substr($date, 6);
-  $date = $year . "-" . $month . "-" . $day;
-  $sql = "SELECT staffCode, p1, p2, p3, p4, p5, p6 FROM absences
+    $day = substr($date, 0, 2);
+    $month = substr($date, 3, 2);
+    $year = substr($date, 6);
+    $date = $year . "-" . $month . "-" . $day;
+    $sql = "SELECT staffCode, p1, p2, p3, p4, p5, p6 FROM absences
           WHERE absenceDate='" . $date . "';";
-  $stmt = mysqli_stmt_init($conn);
-  if (!mysqli_stmt_prepare($stmt, $sql)) {
-      header("location: ../cover.php?error=stmtfailed");
-      exit();
-  }
-  mysqli_stmt_execute($stmt);
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../cover.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_execute($stmt);
 
-  $resultData = mysqli_stmt_get_result($stmt);
-  mysqli_stmt_close($stmt);
-  $absentTeachers = array();
-  while ($row = mysqli_fetch_assoc($resultData)) {
-      $teacher = array();
-      $staffCode = $row["staffCode"];
-      $sql = "SELECT usersTitle, usersForename, usersSurname FROM users
+    $resultData = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    $absentTeachers = array();
+    while ($row = mysqli_fetch_assoc($resultData)) {
+        $teacher = array();
+        $staffCode = $row["staffCode"];
+        $sql = "SELECT usersTitle, usersForename, usersSurname FROM users
               WHERE usersStaffCode='" . $staffCode . "';";
-      $stmt = mysqli_stmt_init($conn);
-      if (!mysqli_stmt_prepare($stmt, $sql)) {
-          header("location: ../cover.php?error=stmtfailed");
-          exit();
-      }
-      mysqli_stmt_execute($stmt);
+        $stmt = mysqli_stmt_init($conn);
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: ../cover.php?error=stmtfailed");
+            exit();
+        }
+        mysqli_stmt_execute($stmt);
 
-      $resultData2 = mysqli_stmt_get_result($stmt);
-      mysqli_stmt_close($stmt);
-      $row2 = mysqli_fetch_assoc($resultData2);
-      $name = $row2["usersTitle"] . " " . $row2["usersForename"] . " ";
-      $name .= $row2["usersSurname"] . " " . $staffCode;
-      $teacher[] = $name;
-      $teacher[] = $row["p1"];
-      $teacher[] = $row["p2"];
-      $teacher[] = $row["p3"];
-      $teacher[] = $row["p4"];
-      $teacher[] = $row["p5"];
-      $teacher[] = $row["p6"];
-      $absentTeachers[] = $teacher;
-  }
+        $resultData2 = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_close($stmt);
+        $row2 = mysqli_fetch_assoc($resultData2);
+        $name = $row2["usersTitle"] . " " . $row2["usersForename"] . " ";
+        $name .= $row2["usersSurname"] . " " . $staffCode;
+        $teacher[] = $name;
+        $teacher[] = $row["p1"];
+        $teacher[] = $row["p2"];
+        $teacher[] = $row["p3"];
+        $teacher[] = $row["p4"];
+        $teacher[] = $row["p5"];
+        $teacher[] = $row["p6"];
+        $absentTeachers[] = $teacher;
+    }
 
-  return $absentTeachers;
-
+    return $absentTeachers;
 }
