@@ -16,7 +16,9 @@
                 require_once 'includes/dbh.inc.php';
                 require_once 'includes/functions.inc.php';
                 $absentTeachers = getAbsences($conn, $date);
+                echo "<pre>";
                 print_r($absentTeachers);
+                echo "</pre>";
 
                 $cols = 7;
 
