@@ -3,3 +3,4 @@ staffTT.csv
 composer.json
 composer.lock
 vendor
+.code2pdf
