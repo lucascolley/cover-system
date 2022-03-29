@@ -1,5 +1,7 @@
 <?php
-  
+  // // get array of absent teachers and periods from post
+  // // update the absences table
+  // // pass date through
   // if (isset($_POST["submit"])) {
   //     $date = $_POST["date"];
   //     $absentTeachers = array();
