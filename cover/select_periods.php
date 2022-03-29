@@ -12,7 +12,7 @@
                 </head>
                 <?php
                 // get array of absent teachers
-                require_once 'includes/dbh.inc.php';
+                    require_once 'includes/dbh.inc.php';
                     require_once 'includes/functions.inc.php';
                     $absentTeachers = getAbsences($conn, $date);
 
