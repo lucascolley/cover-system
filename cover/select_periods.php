@@ -40,7 +40,10 @@
                         $period_count = 0;
                     }
 
-                    $output .= "</table>\n</form>\n";
+                    $output .= "</table>\n";
+                    $output .= "<button type='submit' name='submit' value=Submit>Submit</button>";
+                    $output .= "</form>\n";
+
                     echo $output; ?>
                 <?php
                 } else {
