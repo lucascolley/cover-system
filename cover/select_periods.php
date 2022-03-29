@@ -17,6 +17,7 @@
                     $absentTeachers = getAbsences($conn, $date);
 
                     $output = "<form action='includes/select_periods.inc.php' method='post'>";
+                    $ouput .= "<input type='hidden' id='date' name='date' value='" . $date . "'>";
                     $output .= "<table border='1'>\n<tr>\n<th>Absent Teachers</th>\n";
                     $output .= "<th>P1</th>\n<th>P2</th>\n<th>P3</th>\n<th>P4</th>\n";
                     $output .= "<th>P5</th>\n<th>P6</th>\n</tr>";
