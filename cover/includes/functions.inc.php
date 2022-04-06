@@ -393,3 +393,30 @@ function getAbsences($conn, $date)
 
     return $absentTeachers;
 }
+
+function updateAbsentPeriods($conn, $date, $absentTeachers)
+{
+    $day = substr($date, 0, 2);
+    $month = substr($date, 3, 2);
+    $year = substr($date, 6);
+    $date = $year . "-" . $month . "-" . $day;
+    foreach ($absentTeachers as $teacher) {
+        $staffCode = substr($teacher[0], -3);
+        $p1 = $teacher[1];
+        $p2 = $teacher[2];
+        $p3 = $teacher[3];
+        $p4 = $teacher[4];
+        $p5 = $teacher[5];
+        $p6 = $teacher[6];
+        $sql = "UPDATE absences SET p1=?,p2=?,p3=?,p4=?,p5=?,p6=?
+                WHERE staffCode=? AND absenceDate=?";
+        $stmt = mysqli_stmt_init($conn);
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: ../cover.php?error=stmtfailed");
+            exit();
+        }
+        mysqli_stmt_bind_param($stmt, "iiiiiiss", $p1, $p2, $p3, $p4, $p5, $p6, $staffCode, $date);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
+}
