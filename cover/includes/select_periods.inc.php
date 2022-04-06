@@ -2,7 +2,6 @@
 
   if (isset($_POST["submit"])) {
       $date = $_POST["date"];
-      echo $date;
 
       require_once 'dbh.inc.php';
       require_once 'functions.inc.php';
@@ -24,7 +23,7 @@
 
       updateAbsentPeriods($conn, $date, $absentTeachers);
 
-      header("location: ../next_page.php?date=" . $date);
+      header("location: ../page_select.php?date=" . $date);
       exit();
   } else {
       header("location: ../create_cover.php");
