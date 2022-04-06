@@ -1,4 +1,5 @@
 <?php
+
   if (isset($_POST["submit"])) {
       $date = $_POST["date"];
       echo $date;
@@ -11,10 +12,9 @@
           for ($period_count = 1; $period_count < 7; $period_count++) {
               $period = $teacher_count . "p" . $period_count;
               if (isset($_POST[$period])) {
-                $absentTeachers[$teacher_count][$period_count] = 1;
-              }
-              else {
-                $absentTeachers[$teacher_count][$period_count] = 0;
+                  $absentTeachers[$teacher_count][$period_count] = 1;
+              } else {
+                  $absentTeachers[$teacher_count][$period_count] = 0;
               }
           }
       }
@@ -23,7 +23,7 @@
       print_r($absentTeachers);
       echo "</pre>";
 
-      // // update absences table
+  // // update absences table
       // require_once 'dbh.inc.php';
       // require_once 'functions.inc.php';
       //
