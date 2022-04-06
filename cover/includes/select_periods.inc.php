@@ -19,17 +19,11 @@
           }
       }
 
-      echo "<pre>";
-      print_r($absentTeachers);
-      echo "</pre>";
-
-      // update absences table
       require_once 'dbh.inc.php';
       require_once 'functions.inc.php';
 
       updateAbsentPeriods($conn, $date, $absentTeachers);
 
-      // pass date through
       header("location: ../next_page.php?date=" . $date);
       exit();
   } else {
