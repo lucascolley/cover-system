@@ -11,8 +11,9 @@
                 <head>
                 </head>
                 <?php
-                // output results of match.py
-                // give user option to edit manually
+                // write absences for date to a file to be read by match.py
+                // run match.py
+                // go to generate cover after match.py is ran
                 } else {
                     header("location: ./cover.php");
                 }
