@@ -14,7 +14,7 @@
                 <head>
                 </head>
                 <?php
-                $output = "<a href='page_select.inc.php?date=";
+                $output = "<a href='includes/page_select.inc.php?date=";
                 $output .= $date;
                 $output .= "' class='button'>Generate Cover</a>\n";
                 $output .= "<a href='index.php' class='button'>Home</a>";
