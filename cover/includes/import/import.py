@@ -1,6 +1,6 @@
 # CSV Handling, writing/reading
 
-import pandas
+import pandas as pd
 
 
 def add_commas(timetable):
@@ -123,7 +123,7 @@ def write_to_csv(names, timetables, staff_codes, emails):
                 data[staff_codes[i]].update({periodname: period})
                 k += 1
             j += 1
-    dataframe = pandas.DataFrame(data=data).T
+    df = pd.DataFrame(data=data).T
     columns = ['email', 'title', 'forename', 'surname',
                '1Mon1', '1Mon2', '1Mon3', '1Mon4', '1Mon5', '1Mon6',
                '1Tue1', '1Tue2', '1Tue3', '1Tue4', '1Tue5', '1Tue6',
@@ -135,8 +135,8 @@ def write_to_csv(names, timetables, staff_codes, emails):
                '2Wed1', '2Wed2', '2Wed3', '2Wed4', '2Wed5', '2Wed6',
                '2Thu1', '2Thu2', '2Thu3', '2Thu4', '2Thu5', '2Thu6',
                '2Fri1', '2Fri2', '2Fri3', '2Fri4', '2Fri5', '2Fri6']
-    dataframe = dataframe[columns]
-    dataframe.to_csv('users.csv')
+    df = df[columns]
+    df.to_csv('users.csv')
 
 
 def main():
