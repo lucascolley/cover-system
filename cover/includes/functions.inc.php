@@ -420,3 +420,93 @@ function updateAbsentPeriods($conn, $date, $absentTeachers)
         mysqli_stmt_close($stmt);
     }
 }
+
+function getFreeTeachers($conn, $date)
+{
+    $dates = array();
+    $day = substr($date, 0, 2);
+    $month = substr($date, 3, 2);
+    $year = substr($date, 6);
+    $date = $year . "-" . $month . "-" . $day;
+    $date = new DateTime($date);
+    $originalDate = $date;
+    $day = $originalDate->format('D');
+    $date->modify("Monday this week");
+    $formattedDate = $date->format('Y-m-d');
+    $sql = "SELECT `week` FROM `dates` WHERE `monday`=?;";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../cover.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_bind_param($stmt, "s", $formattedDate);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $week);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+    $sql = "SELECT `users`.`usersStaffCode`, `lessons`.`period`
+            FROM `users`, `lessons`
+            WHERE `users`.`usersEmail` = `lessons`.`teacherEmail`
+            AND `lessons`.`week` = ? AND `lessons`.`day` = ?
+            AND `lessons`.`classCode` = 'free';";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../cover.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_bind_param($stmt, "is", $week, $day);
+    mysqli_stmt_execute($stmt);
+    $resultData = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    $teachers = array();
+    while ($row = mysqli_fetch_assoc($resultData)) {
+        $teacher = array();
+        $teacher[] = $row["usersStaffCode"];
+        $teacher[] = $row["period"];
+        $teachers[] = $teacher;
+    }
+    $results = array();
+    $results[] = $teachers;
+    $results[] = $week;
+    $results[] = $day;
+    return $results;
+}
+
+function getAbsentLessons($conn, $absentTeachers, $week, $day)
+{
+    $absentLessons = array();
+    foreach ($absentTeachers as $teacher) {
+        $staffCode = substr($teacher[0], -3);
+        for ($period = 1; $period <= 6; $period++) {
+            if ($teacher[$period] == 1) {
+                $sql = "SELECT `lessons`.`classCode`,
+                        `lessons`.`period`, `lessons`.`room`
+                        FROM `users`, `lessons`
+                        WHERE `users`.`usersStaffCode` = ?
+                        AND `users`.`usersEmail` = `lessons`.`teacherEmail`
+                        AND `lessons`.`classCode` <> 'free'
+                        AND `lessons`.`week` = ? AND `lessons`.`day` = ?
+                        AND `lessons`.`period` = ?;";
+                $stmt = mysqli_stmt_init($conn);
+                if (!mysqli_stmt_prepare($stmt, $sql)) {
+                    header("location: ../cover.php?error=stmtfailed");
+                    exit();
+                }
+                mysqli_stmt_bind_param($stmt, "sisi", $staffCode, $week, $day, $period);
+                mysqli_stmt_execute($stmt);
+                $resultData = mysqli_stmt_get_result($stmt);
+                mysqli_stmt_close($stmt);
+                $row = mysqli_fetch_assoc($resultData);
+                if ($row["period"] <> '') {
+                    $lesson = array();
+                    $lesson[] = $staffCode;
+                    $lesson[] = $row["classCode"];
+                    $lesson[] = $row["period"];
+                    $lesson[] = $row["room"];
+                    $absentLessons[] = $lesson;
+                }
+            }
+        }
+    }
+    return $absentLessons;
+}
