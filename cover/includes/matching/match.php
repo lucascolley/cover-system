@@ -6,13 +6,22 @@ function score($lessons, $teachers) // for each lesson, give each teacher a scor
 {
     $lessons_scores = [];
     foreach ($lessons as $lesson) {
+        $staffCode = $lesson[0];
+        $classCode = $lesson[1];
+        $period = $lesson[2];
+        $room = $lesson[3];
+        $lessonID = $staffCode . $period;
         $scores = [];
         foreach ($teachers as $teacher) {
-            $score = 0;
-            // calculate teacher score
-            $scores[$teacher] = $score;
+            if ($teacher[1] == $period) {
+                $staffCode = $teacher[0];
+                $score = 0;
+                // calculate teacher score
+                $score = random_int(0, 100);
+                $scores[$staffCode] = $score;
+            }
         }
-        $lessons_scores[$lesson] = $scores;
+        $lessons_scores[$lessonID] = $scores;
     }
     return $lessons_scores;
 }
