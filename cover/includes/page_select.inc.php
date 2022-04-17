@@ -11,18 +11,30 @@
                     <head>
                     </head>
                     <?php
-                    // write absences for date to a file to be read by match.py
+                    // get absences for date
                     include_once 'dbh.inc.php';
                     include_once 'functions.inc.php';
                     $absentTeachers = getAbsences($conn, $date);
-                    $datefile = "datefiles/" . $date . ".csv";
-                    $outfile = fopen($datefile, "w");
-                    foreach ($absentTeachers as $teacher) {
-                        fputcsv($outfile, $teacher);
-                    }
-                    fclose($outfile);
-                // run match.py
-                    // go to generate cover after match.py is ran
+                    // get list of teachers with their lessons for date
+                    $results = getFreeTeachers($conn, $date);
+                    $freeTeachers = $results[0];
+                    $week = $results[1];
+                    $day = $results[2];
+                    echo "<pre>";
+                    print_r($freeTeachers);
+                    echo "</pre>";
+                    // get list of lessons that need to be covered
+                    $absentLessons = getAbsentLessons($conn, $absentTeachers, $week, $day);
+                    echo "<pre>";
+                    print_r($absentLessons);
+                    echo "</pre>";
+                    // run match.php, $freeTeachers, $absentLessons
+                    include_once 'matching/match.php';
+                    $matches = mainMatch($absentLessons, $freeTeachers);
+                    echo "<pre>";
+                    print_r($matches);
+                    echo "</pre>";
+                    // go to generate cover to present $matches
                 } else {
                     header("location: ../cover.php");
                 }
