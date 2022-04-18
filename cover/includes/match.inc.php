@@ -2,6 +2,22 @@
 
 // Complex user-defined algorithm
 
+function conflicts($lessons, $teachers)
+{
+    foreach ($lessons as $lesson) {
+        $i = 0;
+        foreach ($teachers as $teacher) {
+            $staffCode = $teacher[0];
+            if ($lesson[0] == $staffCode) {
+                unset($teachers[$i]);
+            }
+            $i++;
+        }
+    }
+    $results = [$lessons, $teachers];
+    return $results;
+}
+
 function score($lessons, $teachers) // for each lesson, give each teacher a score
 {
     $lessons_scores = [];
@@ -58,6 +74,9 @@ function matchlessons($lessons_scores, $processed_lessons)
 
 function mainMatch($lessons, $teachers)
 {
+    $results = conflicts($lessons, $teachers);
+    $lessons = $results[0];
+    $teachers = $results[1];
     $results = score($lessons, $teachers);
     $lessons_scores = $results[0];
     $processed_lessons = $results[1];
