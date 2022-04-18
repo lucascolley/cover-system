@@ -20,21 +20,16 @@
                     $freeTeachers = $results[0];
                     $week = $results[1];
                     $day = $results[2];
-                    echo "<pre>";
-                    print_r($freeTeachers);
-                    echo "</pre>";
                     // get list of lessons that need to be covered
                     $absentLessons = getAbsentLessons($conn, $absentTeachers, $week, $day);
-                    echo "<pre>";
-                    print_r($absentLessons);
-                    echo "</pre>";
-                    // run match.php, $freeTeachers, $absentLessons
+                    // match cover teaches to the lessons that need cover
                     include_once 'matching/match.php';
                     $matches = mainMatch($absentLessons, $freeTeachers);
-                    echo "<pre>";
-                    print_r($matches);
-                    echo "</pre>";
+                    echo "<pre>"; //
+                    print_r($matches); //
+                    echo "</pre>"; //
                     // go to generate cover to present $matches
+                    //code...
                 } else {
                     header("location: ../cover.php");
                 }
