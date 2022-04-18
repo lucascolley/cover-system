@@ -5,14 +5,16 @@
         <?php
         if (isset($_SESSION["userEmail"])) {
             if ($_SESSION["admin"] !== 0) {
-                if (isset($_GET["date"])) {
-                    $date = $_GET["date"]; ?>
+                if (isset($_POST["matches"])) { ?>
                 <h1></h1>
                 <head>
                 </head>
                 <?php
-                // output results of match.py
-                // give user option to edit manually
+                $matches = unserialize($_POST["matches"]);
+                // output matching results
+                echo "<pre>"; //
+                print_r($matches); //
+                echo "</pre>"; //
                 } else {
                     header("location: ./cover.php");
                 }

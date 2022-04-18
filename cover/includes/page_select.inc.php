@@ -22,14 +22,19 @@
                     $day = $results[2];
                     // get list of lessons that need to be covered
                     $absentLessons = getAbsentLessons($conn, $absentTeachers, $week, $day);
-                    // match cover teaches to the lessons that need cover
+                    // match cover teachers to the lessons that need cover
                     include_once 'matching/match.php';
                     $matches = mainMatch($absentLessons, $freeTeachers);
-                    echo "<pre>"; //
-                    print_r($matches); //
-                    echo "</pre>"; //
                     // go to generate cover to present $matches
-                    //code...
+                    $matchesString = serialize($matches);
+                    ?>
+                    <form action="../generate_cover.php" method="post" id="matchesForm">
+                      <?php
+                      echo "<input type='hidden' name='matches' value='" . $matchesString . "'>";
+                      ?>
+                    </form>
+                    <body onload="document.forms['matchesForm'].submit()">
+                    <?php
                 } else {
                     header("location: ../cover.php");
                 }
