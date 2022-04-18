@@ -479,7 +479,7 @@ function getAbsentLessons($conn, $absentTeachers, $week, $day)
         $staffCode = substr($teacher[0], -3);
         for ($period = 1; $period <= 6; $period++) {
             if ($teacher[$period] == 1) {
-                $sql = "SELECT `lessons`.`classCode`,
+                $sql = "SELECT `lessons`.`lessonID`, `lessons`.`classCode`,
                         `lessons`.`period`, `lessons`.`room`
                         FROM `users`, `lessons`
                         WHERE `users`.`usersStaffCode` = ?
@@ -500,6 +500,7 @@ function getAbsentLessons($conn, $absentTeachers, $week, $day)
                 if ($row["period"] <> '') {
                     $lesson = array();
                     $lesson[] = $staffCode;
+                    $lesson[] = $row["lessonID"];
                     $lesson[] = $row["classCode"];
                     $lesson[] = $row["period"];
                     $lesson[] = $row["room"];
