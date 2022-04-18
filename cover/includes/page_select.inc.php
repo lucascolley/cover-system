@@ -28,6 +28,7 @@
                     // go to generate cover to present $matches
                     $matchesString = serialize($matches); ?>
                     <form action="../generate_cover.php" method="post" id="matchesForm">
+                      <input type="hidden" id="date" name="date" value=<?php echo('"' . $date . '"');?>>
                       <?php
                       echo "<input type='hidden' name='matches' value='" . $matchesString . "'>"; ?>
                     </form>

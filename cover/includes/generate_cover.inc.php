@@ -1,5 +1,6 @@
 <?php
   if (isset($_POST["submit"])) {
+      $date = $_POST["date"];
       $matchesString = $_POST["matches"];
       $matches = unserialize($matchesString);
       $i = 0;
@@ -19,15 +20,15 @@
       print_r($matches);
       echo "</pre>";
 
-      // // update absences table with staff codes for chosen date
-      // require_once 'dbh.inc.php';
-      // require_once 'functions.inc.php';
-      //
-      // updateAbsences($conn, $date, $absentTeachers);
-      //
-      // // pass date through to select_periods
+      // insert final covers into database
+      require_once 'dbh.inc.php';
+      require_once 'functions.inc.php';
+
+      insertCovers($conn, $date, $matches); //
+
+      // pass through to next page
       // header("location: ../select_periods.php?date=" . $date);
-      // exit();
+      exit();
   } else {
       header("location: ../cover.php");
       exit();

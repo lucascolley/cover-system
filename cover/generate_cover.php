@@ -5,7 +5,8 @@
         <?php
         if (isset($_SESSION["userEmail"])) {
             if ($_SESSION["admin"] !== 0) {
-                if (isset($_POST["matches"])) { ?>
+                if (isset($_POST["matches"])) {
+                  $date = $_POST["date"]; ?>
                   <br />
                   <h1>Review Suggested Cover Teachers:</h1>
                   <br />
@@ -27,6 +28,7 @@
                   ?>
                   <br />
                   <form action='includes/generate_cover.inc.php' method='post'>
+                    <input type="hidden" id="date" name="date" value=<?php echo('"' . $date . '"');?>>
                     <?php
                     echo "<input type='hidden' id='matches' name='matches' value='" . $matchesString . "'/>"
                     ?>
