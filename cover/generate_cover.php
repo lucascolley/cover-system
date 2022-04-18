@@ -16,7 +16,8 @@
                   <head>
                   </head>
                   <?php
-                  $matches = unserialize($_POST["matches"]);
+                  $matchesString = $_POST["matches"];
+                  $matches = unserialize($matchesString);
                   $keys = array_column($matches, 'period');
                   array_multisort($keys, SORT_ASC, $matches);
                   // output matching results
@@ -27,7 +28,7 @@
                   <br />
                   <form action='includes/generate_cover.inc.php' method='post'>
                     <?php
-                    echo "<input type='hidden' id='matches' name='matches' value='" . $matches . "'/>"
+                    echo "<input type='hidden' id='matches' name='matches' value='" . $matchesString . "'/>"
                     ?>
                     <table>
                       <tr>
@@ -47,7 +48,10 @@
                               if ($j == 0) {
                                   // input with default value as generated
                                   // optional override
-                                  echo "<td><input type='text' id='match" . $i . "' value='" . $cell . "' /></td>";
+                                  $output = "<td><input type='text' id='match";
+                                  $output .= ($i . "' name='match" . $i);
+                                  $output .= "' value='" . $cell . "' /></td>";
+                                  echo $output;
                               } else {
                                   echo('<td>' . $cell . '</td>');
                               }
