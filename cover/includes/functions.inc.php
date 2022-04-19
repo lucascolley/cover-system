@@ -521,15 +521,55 @@ function insertCovers($conn, $date, $matches)
     foreach ($matches as $match) {
         $lessonID = $match['lessonID'];
         $coverStaffCode = $match['coverStaffCode'];
-        $sql = "INSERT INTO `covers` (`coverDate`, `lessonID`, `coverStaffCode`)
-                VALUES (?, ?, ?);";
+        $period = $match['period'];
+        $room = $match['room'];
+        $staffCode = $match['staffCode'];
+        $classCode = $match['classCode'];
+        $sql = "INSERT INTO `covers` (`coverDate`, `lessonID`, `coverStaffCode`,
+                `period`, `room`, `staffCode`, `classCode`)
+                VALUES (?, ?, ?, ?, ?, ?, ?);";
         $stmt = mysqli_stmt_init($conn);
         if (!mysqli_stmt_prepare($stmt, $sql)) {
             header("location: ../cover.php?error=stmtfailed");
             exit();
         }
-        mysqli_stmt_bind_param($stmt, "sis", $date, $lessonID, $coverStaffCode);
+        mysqli_stmt_bind_param($stmt, "sisisss", $date, $lessonID,
+        $coverStaffCode, $period, $room, $staffCode, $classCode);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
+}
+
+function getCovers($conn, $date)
+{
+    $day = substr($date, 0, 2);
+    $month = substr($date, 3, 2);
+    $year = substr($date, 6);
+    $date = $year . "-" . $month . "-" . $day;
+    $sql = "SELECT `lessonID`, `coverStaffCode`,
+            `period`, `room`, `staffCode`, `classCode`
+            FROM `covers` WHERE `coverDate`=?;";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../cover.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_bind_param($stmt, "s", $date);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+
+    $covers = array();
+    while ($row = mysqli_fetch_assoc($resultData)) {
+        $cover = array();
+        $cover[] = $row["lessonID"];
+        $cover[] = $row["coverStaffCode"];
+        $cover[] = $row["period"];
+        $cover[] = $row["room"];
+        $cover[] = $row["staffCode"];
+        $cover[] = $row["classCode"];
+        $covers[] = $cover;
+    }
+    return $covers;
 }
