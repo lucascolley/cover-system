@@ -511,3 +511,25 @@ function getAbsentLessons($conn, $absentTeachers, $week, $day)
     }
     return $absentLessons;
 }
+
+function insertCovers($conn, $date, $matches)
+{
+    $day = substr($date, 0, 2);
+    $month = substr($date, 3, 2);
+    $year = substr($date, 6);
+    $date = $year . "-" . $month . "-" . $day;
+    foreach ($matches as $match) {
+        $lessonID = $match['lessonID'];
+        $coverStaffCode = $match['coverStaffCode'];
+        $sql = "INSERT INTO `covers` (`coverDate`, `lessonID`, `coverStaffCode`)
+                VALUES (?, ?, ?);";
+        $stmt = mysqli_stmt_init($conn);
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: ../cover.php?error=stmtfailed");
+            exit();
+        }
+        mysqli_stmt_bind_param($stmt, "sis", $date, $lessonID, $coverStaffCode);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
+}

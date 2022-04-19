@@ -27,7 +27,7 @@
       require_once 'dbh.inc.php';
       require_once 'functions.inc.php';
 
-      // insertCovers($conn, $date, $matches); //
+      insertCovers($conn, $date, $matches);
 
       // pass through to next page
       // header("location: ../select_periods.php?date=" . $date);
