@@ -29,16 +29,12 @@
                       ?>
                       <table>
                         <tr>
-                          <?php
-                          $i = 0;
-                          foreach ($matches[0] as $heading => $cell) {
-                              if ($i <> 0) {
-                                  echo('<th>' . $heading . '</th>');
-                              }
-                              $i++;
-                          } ?>
+                          <th>Cover Staff Code</th>
+                          <th>Period</th>
+                          <th>Room</th>
+                          <th>Staff Code</th>
+                          <th>Class Code</th>
                         </tr>
-
                         <?php
                         $i = 0;
                         foreach ($matches as $match) {

@@ -12,43 +12,31 @@
                     <head>
                     </head>
                     <?php
-                    // getCovers
+                    include "includes/dbh.inc.php";
+                    include "includes/functions.inc.php";
+                    $covers = getCovers($conn, $date);
                     ?>
                     <br />
                     <table>
                       <tr>
-                        <?php
-                        // $i = 0;
-                        // foreach ($matches[0] as $heading => $cell) {
-                        //     if ($i <> 0) {
-                        //         echo('<th>' . $heading . '</th>');
-                        //     }
-                        //     $i++;
-                        // } ?>
+                        <th>Cover Staff Code</th>
+                        <th>Period</th>
+                        <th>Room</th>
+                        <th>Staff Code</th>
+                        <th>Class Code</th>
                       </tr>
-
                       <?php
-                      // $i = 0;
-                      // foreach ($matches as $match) {
-                      //     echo('<tr>');
-                      //     $j = 0;
-                      //     foreach ($match as $heading => $cell) {
-                      //         if ($j == 0) {
-                      //             null;
-                      //         } elseif ($j == 1) {
-                      //             // input with default value as generated
-                      //             $output = "<td><input type='text' id='match";
-                      //             $output .= ($i . "' name='match" . $i);
-                      //             $output .= "' value='" . $cell . "' /></td>";
-                      //             echo $output;
-                      //         } else {
-                      //             echo('<td>' . $cell . '</td>');
-                      //         }
-                      //         $j++;
-                      //     }
-                      //     echo('</tr>');
-                      //     $i++;
-                      // } ?>
+                      foreach ($covers as $cover) {
+                          echo('<tr>');
+                          $output = false;
+                          foreach ($cover as $heading => $cell) {
+                              if ($output) {
+                                  echo('<td>' . $cell . '</td>');
+                              }
+                              $output = true;
+                          }
+                          echo('</tr>');
+                      } ?>
                     </table>
                 <?php
                 } else {
