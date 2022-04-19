@@ -30,31 +30,37 @@
                       <table>
                         <tr>
                           <?php
+                          $i = 0;
                           foreach ($matches[0] as $heading => $cell) {
-                              echo('<th>' . $heading . '</th>');
+                              if ($i <> 0) {
+                                  echo('<th>' . $heading . '</th>');
+                              }
+                              $i++;
                           } ?>
                         </tr>
 
                         <?php
                         $i = 0;
-                    foreach ($matches as $match) {
-                        echo('<tr>');
-                        $j = 0;
-                        foreach ($match as $heading => $cell) {
-                            if ($j == 0) {
-                                // input with default value as generated
-                                $output = "<td><input type='text' id='match";
-                                $output .= ($i . "' name='match" . $i);
-                                $output .= "' value='" . $cell . "' /></td>";
-                                echo $output;
-                            } else {
-                                echo('<td>' . $cell . '</td>');
+                        foreach ($matches as $match) {
+                            echo('<tr>');
+                            $j = 0;
+                            foreach ($match as $heading => $cell) {
+                                if ($j == 0) {
+                                    null;
+                                } elseif ($j == 1) {
+                                    // input with default value as generated
+                                    $output = "<td><input type='text' id='match";
+                                    $output .= ($i . "' name='match" . $i);
+                                    $output .= "' value='" . $cell . "' /></td>";
+                                    echo $output;
+                                } else {
+                                    echo('<td>' . $cell . '</td>');
+                                }
+                                $j++;
                             }
-                            $j++;
-                        }
-                        echo('</tr>');
-                        $i++;
-                    } ?>
+                            echo('</tr>');
+                            $i++;
+                        } ?>
                       </table>
                       <button type='submit' name='submit' value=Submit>Confirm Cover</button>
                     </form>

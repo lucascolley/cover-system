@@ -85,6 +85,7 @@ function mainMatch($lessons, $teachers)
     foreach ($matches as $match) {
         foreach ($match as $lessonID => $coverStaffCode) {
             $coverMatch = [];
+            $coverMatch['lessonID'] = $lessonID;
             $coverMatch['coverStaffCode'] = $coverStaffCode;
             $coverMatch['period'] = $processed_lessons[$lessonID][2];
             $coverMatch['room'] = $processed_lessons[$lessonID][3];
