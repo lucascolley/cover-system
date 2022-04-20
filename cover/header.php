@@ -18,6 +18,7 @@
           <li><a href="index.php">Home</a></li>
           <?php
             if (isset($_SESSION["userEmail"])) {
+                echo "<li><a href='view_cover.php'>View Cover</a></li>";
                 echo "<li><a href='change_pwd.php'>Change Password</a></li>";
                 if ($_SESSION["admin"] !== 0) {
                     echo "<li><a href='cover.php'>Cover</a></li>";
