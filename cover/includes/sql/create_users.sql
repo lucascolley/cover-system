@@ -5,4 +5,4 @@ usersForename VARCHAR(255),
 usersSurname VARCHAR(255),
 usersStaffCode VARCHAR(3),
 usersAdmin TINYINT(1) DEFAULT 0,
-usersTeacher TINYINT(1) DEFAULT 1);
+usersSLT TINYINT(1) DEFAULT 0);
