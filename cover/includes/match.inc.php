@@ -17,7 +17,25 @@ function getDepartments($conn, $staffCode)
 
 function checkSLT($conn, $staffCode)
 {
-    //
+    $sql = "SELECT `usersSLT` FROM `users`
+          WHERE `usersStaffCode`=" . $staffCode;
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../page_select.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    while ($row = mysqli_fetch_assoc($resultData)) {
+        if ($row['usersSLT'] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
 
 function conflicts($lessons, $teachers)
