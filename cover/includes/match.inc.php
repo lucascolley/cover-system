@@ -35,7 +35,10 @@ function score($lessons, $teachers) // for each lesson, give each teacher a scor
             if ($teacher[1] == $period) {
                 $coverStaffCode = $teacher[0];
                 $score = 0;
+                // Analyse number of covers completed
+                // Analyse teacher departments
                 // calculate teacher score
+                // SLT (-), Covers (-), Matching department (+)
                 $score = random_int(0, 100); //
                 $scores[$coverStaffCode] = $score;
             }
