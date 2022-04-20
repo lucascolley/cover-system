@@ -2,6 +2,24 @@
 
 // Complex user-defined algorithm
 
+include_once "dbh.inc.php";
+include_once "functions.inc.php";
+
+function getNumCovers($conn, $staffCode)
+{
+    //
+}
+
+function getDepartments($conn, $staffCode)
+{
+    //
+}
+
+function checkSLT($conn, $staffCode)
+{
+    //
+}
+
 function conflicts($lessons, $teachers)
 {
     foreach ($lessons as $lesson) {
@@ -36,7 +54,11 @@ function score($lessons, $teachers) // for each lesson, give each teacher a scor
                 $coverStaffCode = $teacher[0];
                 $score = 0;
                 // Analyse number of covers completed
+                $numCovers = getNumCovers($conn, $coverStaffCode);
                 // Analyse teacher departments
+                $departments = getDepartments($conn, $coverStaffCode);
+                // Check if teacher is SLT
+                $SLT = checkSLT($conn, $coverStaffCode);
                 // calculate teacher score
                 // SLT (-), Covers (-), Matching department (+)
                 $score = random_int(0, 100); //
