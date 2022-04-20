@@ -302,7 +302,7 @@ function emptyInputDate($date)
 function getTeachers($conn)
 {
     $sql = "SELECT `usersTitle`, `usersForename`, `usersSurname`, `usersStaffCode`
-          FROM `users` WHERE `usersTeacher`=1 AND `usersEmail`<>'teacher';";
+            FROM `users` WHERE `usersTeacher`=1 AND `usersEmail`<>'teacher';";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../cover.php?error=stmtfailed");
