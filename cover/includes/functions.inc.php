@@ -533,8 +533,17 @@ function insertCovers($conn, $date, $matches)
             header("location: ../cover.php?error=stmtfailed");
             exit();
         }
-        mysqli_stmt_bind_param($stmt, "sisisss", $date, $lessonID,
-        $coverStaffCode, $period, $room, $staffCode, $classCode);
+        mysqli_stmt_bind_param(
+            $stmt,
+            "sisisss",
+            $date,
+            $lessonID,
+            $coverStaffCode,
+            $period,
+            $room,
+            $staffCode,
+            $classCode
+        );
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
@@ -559,6 +568,10 @@ function getCovers($conn, $date)
 
     $resultData = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
+
+    if ($resultData->num_rows === 0) {
+        return false;
+    }
 
     $covers = array();
     while ($row = mysqli_fetch_assoc($resultData)) {
