@@ -53,7 +53,7 @@ function getDepartments($staffCode)
             }
         }
         if (!in_array($department, $departments)) {
-           $departments[] = $department;
+            $departments[] = $department;
         }
     }
     return $departments;
@@ -76,8 +76,7 @@ function checkSLT($staffCode)
     while ($row = mysqli_fetch_assoc($resultData)) {
         if ($row['usersSLT'] == 1) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
