@@ -4,6 +4,28 @@
 
 include_once "functions.inc.php";
 
+function matchingDepartment($classCode, $departments)
+{
+    if ($classCode == 'EPQ') {
+        $matching = false;
+    } elseif ($classCode == 'COVER') {
+        $matching = false;
+    } else {
+        $i = 1;
+        $department = 'default';
+        for ($i = 0; $i < 10; $i++) {
+            if ($classCode[$i] == '/') {
+                $department = substr($classCode, $i + 1, 2);
+                break;
+            }
+        }
+        if (!in_array($department, $departments)) {
+            $matching = true;
+        }
+    }
+    return $matching;
+}
+
 function getNumCovers($staffCode)
 {
     include "dbh.inc.php";
@@ -114,16 +136,23 @@ function score($lessons, $teachers) // for each lesson, give each teacher a scor
         foreach ($teachers as $teacher) {
             if ($teacher[1] == $period) {
                 $coverStaffCode = $teacher[0];
-                $score = 0;
                 // Analyse number of covers completed
                 $numCovers = getNumCovers($coverStaffCode);
                 // Analyse teacher departments
                 $departments = getDepartments($coverStaffCode);
+                // Check if teacher is of same department as lesson
+                $matchingDepartment = matchingDepartment($classCode, $departments);
                 // Check if teacher is SLT
                 $SLT = checkSLT($coverStaffCode);
                 // calculate teacher score
-                // SLT (-), Covers (-), Matching department (+)
-                $score = random_int(0, 100); //
+                $score = 10;
+                $score -= $numCovers;
+                if ($matchingDepartment) {
+                    $score = $score + 2;
+                }
+                if ($SLT) {
+                    $score /= 2;
+                }
                 $scores[$coverStaffCode] = $score;
             }
         }
