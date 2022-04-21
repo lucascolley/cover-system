@@ -8,7 +8,7 @@ function matchingDepartment($classCode, $departments)
 {
     if ($classCode == 'EPQ') {
         $matching = false;
-    } elseif ($classCode == 'COVER') {
+    } elseif ($classCode == 'Pastoral P') {
         $matching = false;
     } else {
         $i = 1;
@@ -19,7 +19,7 @@ function matchingDepartment($classCode, $departments)
                 break;
             }
         }
-        if (!in_array($department, $departments)) {
+        if (in_array($department, $departments)) {
             $matching = true;
         }
     }
@@ -54,6 +54,8 @@ function getDepartments($staffCode)
           WHERE `lessons`.`teacherEmail`=`users`.`usersEmail`
           AND `lessons`.`classCode`<>'free'
           AND `lessons`.`classCode`<>'P6'
+          AND `lessons`.`classCode`<>'COVER'
+          AND `lessons`.`classCode`<>'Pastoral P'
           AND `users`.`usersStaffCode`='" . $staffCode . "';";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
