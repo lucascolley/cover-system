@@ -84,12 +84,14 @@ li a:hover {
   cursor: pointer;
 }
 
-table {
+table, td, th{
   font-size: 16px;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border: 1px solid;
   border-collapse: collapse;
-  border-spacing: 0;
+  border-spacing: 1;
   width: 100%;
+  table-layout: fixed;
 }
 
 table td, table th {
