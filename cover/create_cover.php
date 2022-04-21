@@ -25,7 +25,9 @@
                       }
                   }
                   $(function() {
+                    // convert teachers array to json
                     var teachers = <?php echo json_encode($teachers); ?>;
+                    // parse the json to construct representations for teachers
                     $.each(teachers, function (i, teacher) {
                         var entry = teacher[0] + ' ' + teacher[1] + ' ' + teacher[2] + ' ' + teacher[3];
                         $("#listbox1").append('<option>' + entry + '</option>');
