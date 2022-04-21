@@ -2,23 +2,68 @@
 
 // Complex user-defined algorithm
 
-include_once "dbh.inc.php";
 include_once "functions.inc.php";
 
-function getNumCovers($conn, $staffCode)
+function getNumCovers($staffCode)
 {
-    //
+    include "dbh.inc.php";
+    $sql = "SELECT `lessonID` FROM `covers`
+            WHERE `coverStaffCode`='" . $staffCode . "';";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../page_select.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_execute($stmt);
+    $resultData = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+
+    $numCovers = 0;
+    while ($row = mysqli_fetch_assoc($resultData)) {
+        $numCovers++;
+    }
+    return $numCovers;
 }
 
-function getDepartments($conn, $staffCode)
+function getDepartments($staffCode)
 {
-    //
+    include "dbh.inc.php";
+    $sql = "SELECT `lessons`.`classCode` FROM `lessons`, `users`
+          WHERE `lessons`.`teacherEmail`=`users`.`usersEmail`
+          AND `lessons`.`classCode`<>'free'
+          AND `lessons`.`classCode`<>'P6'
+          AND `users`.`usersStaffCode`='" . $staffCode . "';";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../page_select.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_execute($stmt);
+    $resultData = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+
+    $departments = array();
+    while ($row = mysqli_fetch_assoc($resultData)) {
+        $classCode = $row['classCode'];
+        $i = 1;
+        for ($i = 0; $i < 10; $i++) {
+            if ($classCode[$i] == '/') {
+                $department = substr($classCode, $i + 1, 2);
+                break;
+            }
+        }
+        if (!in_array($department, $departments)) {
+           $departments[] = $department;
+        }
+    }
+    return $departments;
 }
 
-function checkSLT($conn, $staffCode)
+function checkSLT($staffCode)
 {
+    include "dbh.inc.php";
     $sql = "SELECT `usersSLT` FROM `users`
-          WHERE `usersStaffCode`=" . $staffCode;
+            WHERE `usersStaffCode`='" . $staffCode . "';";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../page_select.php?error=stmtfailed");
@@ -72,11 +117,11 @@ function score($lessons, $teachers) // for each lesson, give each teacher a scor
                 $coverStaffCode = $teacher[0];
                 $score = 0;
                 // Analyse number of covers completed
-                $numCovers = getNumCovers($conn, $coverStaffCode);
+                $numCovers = getNumCovers($coverStaffCode);
                 // Analyse teacher departments
-                $departments = getDepartments($conn, $coverStaffCode);
+                $departments = getDepartments($coverStaffCode);
                 // Check if teacher is SLT
-                $SLT = checkSLT($conn, $coverStaffCode);
+                $SLT = checkSLT($coverStaffCode);
                 // calculate teacher score
                 // SLT (-), Covers (-), Matching department (+)
                 $score = random_int(0, 100); //
