@@ -10,7 +10,40 @@
                     $date = $_GET["date"];
                     require_once 'includes/dbh.inc.php';
                     require_once 'includes/functions.inc.php';
-                    $teachers = getTeachers($conn); ?>
+                    $teachers = getTeachers($conn);
+                    $absentTeachers = getAbsences($conn, $date);
+                    $absentStaffCodes = array();
+                    // separate the staff codes for the absent teachers
+                    foreach ($absentTeachers as $absentTeacher) {
+                        $name = $absentTeacher[0];
+                        $absentStaffCode = substr($name, -3, 3);
+                        $absentStaffCodes[] = $absentStaffCode;
+                    }
+                    // remove absent teachers from the teachers array
+                    $i = 0;
+                    foreach ($teachers as $teacher) {
+                        $staffCode = $teacher[0];
+                        if (in_array($staffCode, $absentStaffCodes)) {
+                            unset($teachers[$i]);
+                        }
+                        $i++;
+                    }
+                    $teachers = array_values($teachers);
+                    // separate the names of the absent teachers
+                    $fullNames = array();
+                    foreach ($absentTeachers as $absentTeacher) {
+                        $name = $absentTeacher[0];
+                        $fullName = substr($name, 0, -4);
+                        $fullNames[] = $fullName;
+                    }
+                    // rejoin the absent teachers parts in table entry format
+                    $i = 0;
+                    foreach ($absentTeachers as $absentTeacher) {
+                        $absentTeachers[$i] = $absentStaffCodes[$i] . " ";
+                        $absentTeachers[$i] .= $fullNames[$i];
+                        $i++;
+                    }
+                    ?>
                 <h1>Create Cover for Day</h1>
                 <head>
                   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -25,12 +58,17 @@
                       }
                   }
                   $(function() {
-                    // convert teachers array to json
+                    // convers php variables to json for processing into entries
                     var teachers = <?php echo json_encode($teachers); ?>;
-                    // parse the json to construct representations for teachers
+                    var absentTeachers = <?php echo json_encode($absentTeachers); ?>;
+                    // parse the json to obtain entries and append to listboxes
                     $.each(teachers, function (i, teacher) {
                         var entry = teacher[0] + ' ' + teacher[1] + ' ' + teacher[2] + ' ' + teacher[3];
                         $("#listbox1").append('<option>' + entry + '</option>');
+                    });
+                    $.each(absentTeachers, function (i, teacher) {
+                        var entry = teacher
+                        $("#listbox2").append('<option>' + entry + '</option>');
                     });
                   });
                   $(function() {
