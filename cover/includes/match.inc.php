@@ -164,28 +164,40 @@ function score($lessons, $teachers) // for each lesson, give each teacher a scor
 
 function matchlessons($lessons_scores, $processed_lessons)
 {
-    $matches = [];
-    $chosen = [];
     // match lessons based on maximising total score
-    foreach ($lessons_scores as $lessonID => $scores) {
-        $match = [];
-        $maxCoverStaffCode = "";
-        $maxScore = 0;
-        foreach ($scores as $coverStaffCode => $score) {
-            if ($score > $maxScore) {
-                $token = $processed_lessons[$lessonID][2] . $coverStaffCode;
-                if (!in_array($token, $chosen)) {
-                    $maxCoverStaffCode = $coverStaffCode;
-                    $maxScore = $score;
+    $ITERATIONS = 10;
+    $bestMatches = array();
+    $bestScore = 0;
+    for ($i = 0; $i < $ITERATIONS; $i++) {
+        shuffle($lessons_scores);
+        $matches = array();
+        $matchesScore = 0;
+        $chosen = array();
+        foreach ($lessons_scores as $lessonID => $scores) {
+            $match = array();
+            $maxCoverStaffCode = "";
+            $maxScore = 0;
+            foreach ($scores as $coverStaffCode => $score) {
+                if ($score > $maxScore) {
+                    $token = $processed_lessons[$lessonID][2] . $coverStaffCode;
+                    if (!in_array($token, $chosen)) {
+                        $maxCoverStaffCode = $coverStaffCode;
+                        $maxScore = $score;
+                    }
                 }
             }
+            $token = $processed_lessons[$lessonID][2] . $maxCoverStaffCode;
+            $chosen[] = $token;
+            $match[$lessonID] = $maxCoverStaffCode;
+            $matches[] = $match;
+            $matchesScore += $maxScore;
         }
-        $token = $processed_lessons[$lessonID][2] . $maxCoverStaffCode;
-        $chosen[] = $token;
-        $match[$lessonID] = $maxCoverStaffCode;
-        $matches[] = $match;
+        if ($matchesScore > $bestScore) {
+            $bestScore = $matchesScore;
+            $bestMatches = $matches;
+        }
     }
-    return $matches;
+    return $bestMatches;
 }
 
 function mainMatch($lessons, $teachers)
