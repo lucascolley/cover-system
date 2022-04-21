@@ -486,6 +486,7 @@ function getAbsentLessons($conn, $absentTeachers, $week, $day)
                         AND `users`.`usersEmail` = `lessons`.`teacherEmail`
                         AND `lessons`.`classCode` <> 'free'
                         AND `lessons`.`classCode` <> 'P6'
+                        AND `lessons`.`classCode` <> 'COVER'
                         AND `lessons`.`week` = ? AND `lessons`.`day` = ?
                         AND `lessons`.`period` = ?;";
                 $stmt = mysqli_stmt_init($conn);
