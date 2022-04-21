@@ -169,11 +169,17 @@ function matchlessons($lessons_scores, $processed_lessons)
     $bestMatches = array();
     $bestScore = 0;
     for ($i = 0; $i < $ITERATIONS; $i++) {
-        shuffle($lessons_scores);
+        $keys = array_keys($lessons_scores);
+        shuffle($keys);
+        $shuffled = array();
+        foreach ($keys as $key) {
+          $shuffled[$key] = $lessons_scores[$key];
+        }
+        $lessons_scores_shuffled = $shuffled;
         $matches = array();
         $matchesScore = 0;
         $chosen = array();
-        foreach ($lessons_scores as $lessonID => $scores) {
+        foreach ($lessons_scores_shuffled as $lessonID => $scores) {
             $match = array();
             $maxCoverStaffCode = "";
             $maxScore = 0;
@@ -188,8 +194,7 @@ function matchlessons($lessons_scores, $processed_lessons)
             }
             $token = $processed_lessons[$lessonID][2] . $maxCoverStaffCode;
             $chosen[] = $token;
-            $match[$lessonID] = $maxCoverStaffCode;
-            $matches[] = $match;
+            $matches[$lessonID] = $maxCoverStaffCode;
             $matchesScore += $maxScore;
         }
         if ($matchesScore > $bestScore) {
@@ -210,17 +215,17 @@ function mainMatch($lessons, $teachers)
     $processed_lessons = $results[1];
     $matches = matchlessons($lessons_scores, $processed_lessons);
     $coverMatches = [];
-    foreach ($matches as $match) {
-        foreach ($match as $lessonID => $coverStaffCode) {
-            $coverMatch = [];
-            $coverMatch['lessonID'] = $lessonID;
-            $coverMatch['coverStaffCode'] = $coverStaffCode;
-            $coverMatch['period'] = $processed_lessons[$lessonID][2];
-            $coverMatch['room'] = $processed_lessons[$lessonID][3];
-            $coverMatch['staffCode'] = $processed_lessons[$lessonID][0];
-            $coverMatch['classCode'] = $processed_lessons[$lessonID][1];
-            $coverMatches[] = $coverMatch;
-        }
+    foreach ($matches as $lessonID => $coverStaffCode) {
+        $coverMatch = [];
+        $coverMatch['lessonID'] = $lessonID;
+        $coverMatch['coverStaffCode'] = $coverStaffCode;
+        $coverMatch['period'] = $processed_lessons[$lessonID][2];
+        $coverMatch['room'] = $processed_lessons[$lessonID][3];
+        $coverMatch['staffCode'] = $processed_lessons[$lessonID][0];
+        $coverMatch['classCode'] = $processed_lessons[$lessonID][1];
+        $coverMatches[] = $coverMatch;
     }
+    $keys = array_column($coverMatches, 'period');
+    array_multisort($keys, SORT_ASC, $coverMatches);
     return $coverMatches;
 }
