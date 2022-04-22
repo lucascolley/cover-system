@@ -7,7 +7,9 @@
             if ($_SESSION["admin"] !== 0) {
                 if (isset($_GET["date"])) {
                     $date = $_GET["date"]; ?>
+                <br>
                 <h1>Tick Boxes for Absent Periods</h1>
+                <br>
                 <head>
                 </head>
                 <?php
@@ -43,6 +45,7 @@
                     }
 
                     $output .= "</table>\n";
+                    $output .= "<br>";
                     $output .= "<button type='submit' name='submit' value=Submit>Submit</button>";
                     $output .= "\n</form>\n";
 

@@ -65,6 +65,7 @@
                             $i++;
                         } ?>
                       </table>
+                      <br>
                       <button class="button" type='submit' name='submit' value=Submit>Confirm Cover</button>
                     </form>
                 <?php

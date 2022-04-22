@@ -5,7 +5,9 @@
         <?php
         if (isset($_SESSION["userEmail"])) {
             if ($_SESSION["admin"] !== 0) { ?>
+              <br>
               <h1>Create Cover for Day</h1>
+              <br>
               <head>
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
