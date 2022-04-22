@@ -176,9 +176,10 @@ function changePwd($conn, $email, $pwd, $newPwd)
         exit();
     }
 
+    $emailExists = emailExists($conn, $email);
     $pwdHashed = $emailExists["usersPwd"];
     $checkPwd = password_verify($pwd, $pwdHashed);
-
+    
     if ($checkPwd === false) {
         header("location: ../change_pwd.php?error=wronglogin");
         exit();
