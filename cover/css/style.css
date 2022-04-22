@@ -75,13 +75,14 @@ li a:hover {
   background-color: #1c87c9;
   border: none;
   color: white;
-  padding: 20px 34px;
+  padding: 20px 0px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 20px;
-  margin: 4px 2px;
+  margin: 0px 0px;
   cursor: pointer;
+  width:100%;
 }
 
 table, td, th{
