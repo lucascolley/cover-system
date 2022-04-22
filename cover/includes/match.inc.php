@@ -220,14 +220,51 @@ function mainMatch($lessons, $teachers)
     foreach ($matches as $lessonID => $coverStaffCode) {
         $coverMatch = [];
         $coverMatch['lessonID'] = $lessonID;
-        $coverMatch['coverStaffCode'] = $coverStaffCode;
+        if ($coverStaffCode == "") {
+            $coverMatch['coverStaffCode'] = 'EXT';
+        } else {
+            $coverMatch['coverStaffCode'] = $coverStaffCode;
+        }
         $coverMatch['period'] = $processed_lessons[$lessonID][2];
         $coverMatch['room'] = $processed_lessons[$lessonID][3];
         $coverMatch['staffCode'] = $processed_lessons[$lessonID][0];
         $coverMatch['classCode'] = $processed_lessons[$lessonID][1];
         $coverMatches[] = $coverMatch;
     }
+    $EXT = array();
+    $EXT[1] = 0;
+    $EXT[2] = 0;
+    $EXT[3] = 0;
+    $EXT[4] = 0;
+    $EXT[5] = 0;
+    $EXT[6] = 0;
+    foreach ($coverMatches as $coverMatch) {
+        if ($coverMatch['coverStaffCode'] == 'EXT') {
+            switch ($coverMatch['period']) {
+                case 1:
+                    $EXT[1] += 1;
+                    break;
+                case 2:
+                    $EXT[2] += 1;
+                    break;
+                case 3:
+                    $EXT[3] += 1;
+                    break;
+                case 4:
+                    $EXT[4] += 1;
+                    break;
+                case 5:
+                    $EXT[5] += 1;
+                    break;
+                case 6:
+                    $EXT[6] += 1;
+                    break;
+            }
+        }
+    }
+    $EXTmax = max($EXT);
     $keys = array_column($coverMatches, 'period');
     array_multisort($keys, SORT_ASC, $coverMatches);
+    $coverMatches = [$coverMatches, 'numEXT' => $EXTmax];
     return $coverMatches;
 }
