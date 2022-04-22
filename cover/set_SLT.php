@@ -104,10 +104,13 @@
                 <select id="listbox1" multiple="multiple" size="10"></select>
               </td>
               <td>
-                <input type="button" id="but1" value=">"/>
-                <input type="button" id="but2" value="<"/>
-                <input type="button" id="but3" value="<<<"/>
-                <button type="submit" name="submit" value=Submit onclick="selectAll();">Submit</button>
+                <div class="transfer-buttons">
+                  <input type="button" style="width: 32%;" id="but1" value=">"/>
+                  <input type="button" style="width: 32%;" id="but2" value="<"/>
+                  <input type="button" style="width: 32%;" id="but3" value="<<<"/>
+                </div>
+                <br>
+                <button type="submit" style="width: 100%;" name="submit" value=Submit onclick="selectAll();">Submit</button>
               </td>
               <td>
                 <select id="listbox2" name="selectName[]" multiple="multiple" size="10"></select>

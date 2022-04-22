@@ -82,7 +82,7 @@ li a:hover {
   font-size: 20px;
   margin: 0px 0px;
   cursor: pointer;
-  width:100%;
+  width: 100%;
 }
 
 table, td, th{
@@ -96,14 +96,19 @@ table, td, th{
 }
 
 table td, table th {
-    text-align: left;
-    padding: 8px;
+  text-align: left;
+  padding: 8px;
 }
 
 table th {
-    padding-top: 11px;
-    padding-bottom: 11px;
-    background-color: #04AA6D;
-    color: white;
-    border-color: black;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  background-color: #04AA6D;
+  color: white;
+  border-color: black;
+}
+
+.transfer-buttons {
+  display: flex;
+  justify-content: space-between;
 }

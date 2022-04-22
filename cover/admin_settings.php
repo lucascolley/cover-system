@@ -5,6 +5,7 @@
         <?php
         if (isset($_SESSION["userEmail"])) {
             ?>
+            <br>
             <table>
               <td><a href='create_user.php' class='button'>Create User</a></td>
               <td><a href='delete_user.php' class='button'>Delete User</a></td>

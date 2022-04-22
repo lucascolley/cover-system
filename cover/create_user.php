@@ -5,15 +5,21 @@
         <?php
         if (isset($_SESSION["userEmail"])) {
             if ($_SESSION["admin"] !== 0) {
-                echo "<h1>Create a User</h1>";
-                echo "<form action='includes/create_user.inc.php' method='post'>";
-                echo "  <input type='text' name='email' placeholder='email...'><br>";
-                echo "  <input type='password' name='pwd' placeholder='password...'><br>";
-                echo "  <input type='password' name='pwdrepeat' placeholder='repeat password...'><br>";
-                echo "  <label for='admin'> Admin?</label>";
-                echo "  <input type='checkbox' id='admin' name='admin' value='1'><br>";
-                echo "  <button type='submit' name='submit'>Create User</button>";
-                echo "</form>";
+                ?>
+                <br>
+                <h1>Create a User</h1>
+                <br>
+                <form action='includes/create_user.inc.php' method='post'>
+                  <input type='text' name='email' placeholder='email...'><br>
+                  <input type='password' name='pwd' placeholder='password...'><br>
+                  <input type='password' name='pwdrepeat' placeholder='repeat password...'><br>
+                  <br>
+                  <label for='admin'> Admin?</label>
+                  <input type='checkbox' id='admin' name='admin' value='1'><br>
+                  <br>
+                  <button type='submit' name='submit'>Create User</button>
+                </form>
+                <?php
                 if (isset($_GET["error"])) {
                     if ($_GET["error"] == "emptyinput") {
                         echo "<p>Please fill in all fields!</p>";
