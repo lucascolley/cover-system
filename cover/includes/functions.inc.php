@@ -332,6 +332,14 @@ function updateAbsences($conn, $date, $absentTeachers)
     $month = substr($date, 3, 2);
     $year = substr($date, 6);
     $date = $year . "-" . $month . "-" . $day;
+    $sql = "DELETE FROM `absences` WHERE `absenceDate`='" . $date . "';";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../cover.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
     foreach ($absentTeachers as $teacher) {
         $staffCode = substr($teacher, 0, 3);
         $sql = "INSERT INTO absences (staffCode, absenceDate) VALUES (?, ?);";
@@ -520,6 +528,14 @@ function insertCovers($conn, $date, $matches)
     $month = substr($date, 3, 2);
     $year = substr($date, 6);
     $date = $year . "-" . $month . "-" . $day;
+    $sql = "DELETE FROM `covers` WHERE `coverDate`='" . $date . "';";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../cover.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
     foreach ($matches as $match) {
         $lessonID = $match['lessonID'];
         $coverStaffCode = $match['coverStaffCode'];
