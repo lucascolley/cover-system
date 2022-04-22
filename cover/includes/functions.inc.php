@@ -302,7 +302,7 @@ function emptyInputDate($date)
 
 function getTeachers($conn)
 {
-    $sql = "SELECT `usersTitle`, `usersForename`, `usersSurname`, `usersStaffCode`
+    $sql = "SELECT `usersTitle`, `usersForename`, `usersSurname`, `usersStaffCode`, `usersSLT`
             FROM `users` WHERE `usersTeacher`=1 AND `usersEmail`<>'teacher';";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -320,6 +320,7 @@ function getTeachers($conn)
         $teacher[] = $row["usersTitle"];
         $teacher[] = $row["usersForename"];
         $teacher[] = $row["usersSurname"];
+        $teacher[] = $row["usersSLT"];
         $teachers[] = $teacher;
     }
     return $teachers;
@@ -608,6 +609,14 @@ function getCovers($conn, $date)
 
 function updateSLT($conn, $SLT)
 {
+    $sql = "UPDATE `users` SET `usersSLT`=0;";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../setSLT.php?error=stmtfailed");
+        exit();
+    }
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
     foreach ($SLT as $teacher) {
         $staffCode = substr($teacher, 0, 3);
         $sql = "UPDATE `users` SET `usersSLT`=1 WHERE `usersStaffCode`=?;";

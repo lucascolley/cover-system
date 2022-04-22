@@ -14,7 +14,7 @@
       updateSLT($conn, $SLT);
 
       // go to confirmation
-      header("location: ../SLT_done.php");
+      header("location: ../set_SLT.php?error=none");
       exit();
 
   } else {
