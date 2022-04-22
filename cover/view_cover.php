@@ -1,6 +1,7 @@
 <?php
   include_once 'header.php'
 ?>
+      <br>
       <h1>Choose Date to view cover for:</h1>
       <head>
         <meta charset="utf-8">
@@ -16,6 +17,7 @@
         </script>
       </head>
       <body>
+        <br>
         <form action='includes/view_cover.inc.php' method='post'>
           Enter Date: <input type='text' name='date' id='datepicker'
                              value=<?php echo "'" . date('d-m-Y') . "'"?>><br>

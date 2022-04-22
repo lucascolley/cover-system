@@ -2,7 +2,9 @@
   include_once 'header.php'
 ?>
       <section class="login-form">
+        <br>
         <h1>Login to the Cover System!</h1>
+        <br>
         <form action="includes/login.inc.php" method="post">
           <input type="text" name="email" placeholder="email...">
           <input type="password" name="pwd" placeholder="password...">

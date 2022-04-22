@@ -5,7 +5,9 @@
           echo "<section class='change_pwd-form'>";
 
       if (isset($_SESSION["userEmail"])) {
+          echo "<br>";
           echo "<h1>Change Password!</h1>";
+          echo "<br>";
           echo "<form action='includes/change_pwd.inc.php' method='post'>";
           echo " <input type='hidden' name='email' value='". $_SESSION['userEmail'] ."'>";
           echo " <input type='password' name='pwd' placeholder='current password...'>";
@@ -14,6 +16,7 @@
           echo " <button type='submit' name='submit'>Change Password</button>";
           echo "</form>";
           echo "</section>";
+          echo "<br>";
 
           if (isset($_GET["error"])) {
               if ($_GET["error"] == "emptyinput") {
@@ -22,6 +25,8 @@
                   echo "<p>Repeat Password does not match!</p>";
               } elseif ($_GET["error"] == "wronglogin") {
                   echo "<p>Incorrect Password!</p>";
+              } elseif ($_GET["error"] == "none") {
+                  echo "<p>Password Changed!</p>";
               }
           }
       } else {
