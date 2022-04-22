@@ -61,7 +61,7 @@ function emailExists($conn, $email)
 function createUser($conn, $email, $pwd, $admin)
 {
     // Parameterised SQL
-    $sql = "INSERT INTO users (usersEmail, usersPwd, admin) VALUES (?, ?, ?);";
+    $sql = "INSERT INTO users (usersEmail, usersPwd, usersAdmin) VALUES (?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../create_user.php?error=stmtfailed");
@@ -179,7 +179,7 @@ function changePwd($conn, $email, $pwd, $newPwd)
     $emailExists = emailExists($conn, $email);
     $pwdHashed = $emailExists["usersPwd"];
     $checkPwd = password_verify($pwd, $pwdHashed);
-    
+
     if ($checkPwd === false) {
         header("location: ../change_pwd.php?error=wronglogin");
         exit();
