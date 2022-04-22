@@ -24,13 +24,16 @@
                     $absentLessons = getAbsentLessons($conn, $absentTeachers, $week, $day);
                     // match cover teachers to the lessons that need cover
                     include_once 'match.inc.php';
-                    $matches = mainMatch($absentLessons, $freeTeachers);
+                    $results = mainMatch($absentLessons, $freeTeachers);
+                    $matches = $results[0];
+                    $numEXT = $results['numEXT'];
                     // go to generate cover to present $matches
                     $matchesString = serialize($matches); ?>
                     <form action="../generate_cover.php" method="post" id="matchesForm">
                       <input type="hidden" id="date" name="date" value=<?php echo('"' . $date . '"');?>>
                       <?php
-                      echo "<input type='hidden' name='matches' value='" . $matchesString . "'>"; ?>
+                      echo "<input type='hidden' name='matches' value='" . $matchesString . "'>";
+                      echo "<input type='hidden' name='numEXT' value='" . $numEXT . "'>"; ?>
                     </form>
                     <body onload="document.forms['matchesForm'].submit()">
                     <?php

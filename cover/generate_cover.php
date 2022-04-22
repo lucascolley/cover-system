@@ -18,9 +18,16 @@
                     </head>
                     <?php
                     $matchesString = $_POST["matches"];
+                    $numEXT = $_POST["numEXT"];
                     $matches = unserialize($matchesString);
                     $keys = array_column($matches, 'period');
-                    array_multisort($keys, SORT_ASC, $matches); ?>
+                    array_multisort($keys, SORT_ASC, $matches);
+                    if ($numEXT <> 0) {
+                        echo ("<br /><h4>Warning: A minimum of " . $numEXT);
+                        echo (" External Supply Teachers are required, ");
+                        echo ("these have been denoted with code EXT.</h4>");
+                    }
+                    ?>
                     <br />
                     <form action='includes/generate_cover.inc.php' method='post'>
                       <input type="hidden" id="date" name="date" value=<?php echo('"' . $date . '"'); ?>>
