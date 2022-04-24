@@ -15,6 +15,7 @@
                     include "includes/dbh.inc.php";
                     include "includes/functions.inc.php";
                     $covers = getCovers($conn, $date);
+                    // sort covers array by period
                     $keys = array_column($covers, 2);
                     array_multisort($keys, SORT_ASC, $covers);
                     ?>

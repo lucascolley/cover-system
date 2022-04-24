@@ -3,6 +3,7 @@
 ?>
       <section>
         <?php
+        // exception handling to avoid unintended access
         if (isset($_SESSION["userEmail"])) {
             if ($_SESSION["admin"] !== 0) {
                 if (isset($_GET["date"])) {
@@ -27,7 +28,7 @@
                     $results = mainMatch($absentLessons, $freeTeachers);
                     $matches = $results[0];
                     $numEXT = $results['numEXT'];
-                    // go to generate cover to present $matches
+                    // go to generate cover to present matches
                     $matchesString = serialize($matches); ?>
                     <form action="../generate_cover.php" method="post" id="matchesForm">
                       <input type="hidden" id="date" name="date" value=<?php echo('"' . $date . '"');?>>

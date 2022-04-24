@@ -13,6 +13,7 @@
                     if (!$covers) {
                         echo "<h1>No Cover List set for " . $date . "!</h1>";
                     } else {
+                        // sort covers by period
                         $keys = array_column($covers, 2);
                         array_multisort($keys, SORT_ASC, $covers);
                         ?>

@@ -5,19 +5,21 @@
           echo "<section class='change_pwd-form'>";
 
       if (isset($_SESSION["userEmail"])) {
-          echo "<br>";
-          echo "<h1>Change Password!</h1>";
-          echo "<br>";
-          echo "<form action='includes/change_pwd.inc.php' method='post'>";
-          echo " <input type='hidden' name='email' value='". $_SESSION['userEmail'] ."'>";
-          echo " <input type='password' name='pwd' placeholder='current password...'>";
-          echo " <input type='password' name='newpwd' placeholder='new password...'>";
-          echo " <input type='password' name='newpwdrepeat' placeholder='repeat new password...'>";
-          echo " <button type='submit' name='submit'>Change Password</button>";
-          echo "</form>";
-          echo "</section>";
-          echo "<br>";
+          ?>
+          <br>
+          <h1>Change Password!</h1>
+          <br>
+          <form action='includes/change_pwd.inc.php' method='post'>
+           <input type='hidden' name='email' value='". $_SESSION['userEmail'] ."'>
+           <input type='password' name='pwd' placeholder='current password...'>
+           <input type='password' name='newpwd' placeholder='new password...'>
+           <input type='password' name='newpwdrepeat' placeholder='repeat new password...'>
+           <button type='submit' name='submit'>Change Password</button>
+          </form>
+          </section>
+          <br>
 
+          <?php
           if (isset($_GET["error"])) {
               if ($_GET["error"] == "emptyinput") {
                   echo "<p>Please fill in all fields!</p>";

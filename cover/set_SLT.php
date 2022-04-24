@@ -7,6 +7,7 @@
         require_once 'includes/functions.inc.php';
         $teachers = getTeachers($conn);
         $teachersSLT = array();
+        // remove SLT from the teachers array and append to their own array
         $i = 0;
         foreach ($teachers as $teacher) {
             $SLT = $teacher[4];
@@ -16,6 +17,7 @@
             }
             $i++;
         }
+        // re-set the indexes of teachers array after removals
         $teachers = array_values($teachers);
         ?>
         <br>
@@ -24,7 +26,7 @@
         <head>
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
           <script>
-          function selectAll()
+          function selectAll() // selects all entries in listbox2 when form is submitted
           {
               selectBox = document.getElementById("listbox2");
 
@@ -34,8 +36,10 @@
               }
           }
           $(function() {
+            // convert php arrays into json
             var teachers = <?php echo json_encode($teachers); ?>;
             var teachersSLT = <?php echo json_encode($teachersSLT); ?>;
+            // parse json and append entries for each array to the respective listboxes
             $.each(teachers, function (i, teacher) {
                 var entry = teacher[0] + ' ' + teacher[1] + ' ' + teacher[2] + ' ' + teacher[3];
                 $("#listbox1").append('<option>' + entry + '</option>');
@@ -45,7 +49,7 @@
                 $("#listbox2").append('<option>' + entry + '</option>');
             });
           });
-          $(function() {
+          $(function() { // button 1 moves selected elements in listbox1 to listbox2
             $( "#but1" ).click(function()
             {
             $("#listbox1 option:selected").each(function()
@@ -60,7 +64,7 @@
               });
             });
           });
-          $(function() {
+          $(function() { // button 2 moves selected elements in listbox2 to listbox1
               $( "#but2" ).click(function()
               {
                 $("#listbox2 option:selected").each(function()
@@ -75,7 +79,7 @@
                 });
               });
             });
-            $(function() {
+            $(function() { // button 3 moves all elements in listbox2 to listbox1
                 $( "#but3" ).click(function()
                 {
                   $("#listbox2 option").each(function()

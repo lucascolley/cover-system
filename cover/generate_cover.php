@@ -20,6 +20,7 @@
                     $matchesString = $_POST["matches"];
                     $numEXT = $_POST["numEXT"];
                     $matches = unserialize($matchesString);
+                    // sort matches array by period
                     $keys = array_column($matches, 'period');
                     array_multisort($keys, SORT_ASC, $matches);
                     if ($numEXT <> 0) {

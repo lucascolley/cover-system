@@ -18,11 +18,12 @@
           }
       }
 
+      // update Absences table with correct periods
       require_once 'dbh.inc.php';
       require_once 'functions.inc.php';
-
       updateAbsentPeriods($conn, $date, $absentTeachers);
 
+      // go to page where user can choose to generate cover or return home
       header("location: ../page_select.php?date=" . $date);
       exit();
   } else {

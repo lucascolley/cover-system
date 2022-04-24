@@ -13,7 +13,6 @@
                 <head>
                 </head>
                 <?php
-                // get array of absent teachers
                     require_once 'includes/dbh.inc.php';
                     require_once 'includes/functions.inc.php';
                     $absentTeachers = getAbsences($conn, $date);
@@ -25,8 +24,10 @@
                     $output .= "<th>P1</th>\n<th>P2</th>\n<th>P3</th>\n<th>P4</th>\n";
                     $output .= "<th>P5</th>\n<th>P6</th>\n</tr>";
 
+                    // output form of absent teachers and their periods as a table
                     for ($teacher_count = 0; $teacher_count < count($absentTeachers); $teacher_count++) {
                         $teacherName = $absentTeachers[$teacher_count][0];
+                        // output teacher name in the first column
                         $output .= "<tr>\n<td>" . $teacherName . "</td>\n";
                         for ($period_count = 1; $period_count < 7; $period_count++) {
                             $period = $teacher_count . "p" . $period_count;
