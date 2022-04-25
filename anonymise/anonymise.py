@@ -1,4 +1,4 @@
-# Writing/reading
+# replace real staff timetable with random names for anonymisaton
 
 def anonymise(timetable, names):
     for i in range(96):

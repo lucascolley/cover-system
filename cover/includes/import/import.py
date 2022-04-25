@@ -1,4 +1,5 @@
 # CSV Handling, writing/reading
+# Converts imported timetable csv to formatted users csv
 
 import pandas as pd
 

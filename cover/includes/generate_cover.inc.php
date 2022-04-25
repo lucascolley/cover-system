@@ -4,8 +4,10 @@
       $date = $_POST["date"];
       $matchesString = $_POST["matches"];
       $matches = unserialize($matchesString);
+      // sort matches array by period
       $keys = array_column($matches, 'period');
       array_multisort($keys, SORT_ASC, $matches);
+      // get matches from POST into multi-dimensional array
       $i = 0;
       foreach ($matches as $match) {
           $j = 0;
@@ -19,13 +21,12 @@
           $i++;
       }
 
-      // insert final covers into database
       require_once 'dbh.inc.php';
       require_once 'functions.inc.php';
 
       insertCovers($conn, $date, $matches);
 
-      // pass through to next page
+      // pass through to confirmation to display covers
       header("location: ../confirmation.php?date=" . $date);
       exit();
   } else {
