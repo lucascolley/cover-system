@@ -35,7 +35,6 @@ function pwdMatch($pwd, $pwdRepeat)
 
 function emailExists($conn, $email)
 {
-    // Parameterised SQL
     $sql = "SELECT * FROM users WHERE usersEmail = ?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -60,7 +59,7 @@ function emailExists($conn, $email)
 
 function createUser($conn, $email, $pwd, $admin)
 {
-    // Parameterised SQL
+    // parameterised SQL
     $sql = "INSERT INTO users (usersEmail, usersPwd, usersAdmin) VALUES (?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -68,7 +67,7 @@ function createUser($conn, $email, $pwd, $admin)
         exit();
     }
 
-    // Hashing
+    // password hashing implemented
     $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
     mysqli_stmt_bind_param($stmt, "sss", $email, $hashedPwd, $admin);
@@ -90,8 +89,8 @@ function emptyInputLogin($email, $pwd)
 
 function loginUser($conn, $email, $pwd)
 {
+    // get user info for inputted email
     $emailExists = emailExists($conn, $email);
-
     if ($emailExists === false) {
         header("location: ../login.php?error=wronglogin");
         exit();
@@ -114,14 +113,14 @@ function loginUser($conn, $email, $pwd)
 
 function deleteUser($conn, $userEmail, $adminEmail, $pwd)
 {
+    // check if user to be deleted exists
     $emailExists = emailExists($conn, $userEmail);
-
     if ($emailExists === false) {
         header("location: ../delete_user.php?error=nouser");
         exit();
     }
 
-    // Parameterised SQL
+    // parameterised SQL
     $sql = "DELETE FROM users WHERE usersEmail=?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -129,6 +128,7 @@ function deleteUser($conn, $userEmail, $adminEmail, $pwd)
         exit();
     }
 
+    // get info for admin
     $emailExists = emailExists($conn, $adminEmail);
     $pwdHashed = $emailExists["usersPwd"];
     $checkPwd = password_verify($pwd, $pwdHashed);
@@ -168,7 +168,7 @@ function emptyInputChangePwd($pwd, $newPwd, $newPwdRepeat)
 
 function changePwd($conn, $email, $pwd, $newPwd)
 {
-    // Parameterised SQL
+    // parameterised SQL
     $sql = "UPDATE users SET usersPwd=? WHERE usersEmail=?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -176,6 +176,7 @@ function changePwd($conn, $email, $pwd, $newPwd)
         exit();
     }
 
+    // get user info for email
     $emailExists = emailExists($conn, $email);
     $pwdHashed = $emailExists["usersPwd"];
     $checkPwd = password_verify($pwd, $pwdHashed);
@@ -195,6 +196,7 @@ function changePwd($conn, $email, $pwd, $newPwd)
 
 function importTeachers($conn)
 {
+    // import rows of users.csv into users array
     $file = fopen("import/users.csv", "r");
     $users = [];
     $x = 0;
@@ -204,6 +206,7 @@ function importTeachers($conn)
     }
     fclose($file);
 
+    // separate the column headings from the rest of the array
     $columns = array_shift($users);
     $lessonID = 1;
     foreach ($users as $user) {
@@ -213,10 +216,11 @@ function importTeachers($conn)
             $title = $user[2];
             $forename = $user[3];
             $surname = $user[4];
-            // Parameterised SQL
+            // parameterised SQL
+            // import relevant data into users table
             $sql = "INSERT INTO users
-      (usersEmail, usersTitle, usersForename, usersSurname, usersStaffCode)
-      VALUES (?, ?, ?, ?, ?);";
+            (usersEmail, usersTitle, usersForename, usersSurname, usersStaffCode)
+            VALUES (?, ?, ?, ?, ?);";
             $stmt = mysqli_stmt_init($conn);
             if (!mysqli_stmt_prepare($stmt, $sql)) {
                 header("location: ../import_teachers.php?error=stmtfailed");
@@ -234,11 +238,13 @@ function importTeachers($conn)
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
 
+            // get the lessons from the imported csv
             $lessons = [];
             $user = array_slice($user, 5);
             foreach ($user as $period) {
                 array_push($lessons, $period);
             }
+            // format lessons into desired form
             $i = 5;
             foreach ($lessons as $lesson) {
                 $time = $columns[$i];
@@ -259,10 +265,11 @@ function importTeachers($conn)
                 $room = str_replace("]", '', $room);
                 $room = str_replace(" ", '', $room);
                 $room = substr($room, 0, 3);
-                // Parameterised SQL
+                // parameterised SQL
+                // import relevant data into lessons table
                 $sql = "INSERT INTO lessons
-        (lessonID, teacherEmail, classCode, week, day, period, room)
-        VALUES (?, ?, ?, ?, ?, ?, ?);";
+                (lessonID, teacherEmail, classCode, week, day, period, room)
+                VALUES (?, ?, ?, ?, ?, ?, ?);";
                 $stmt = mysqli_stmt_init($conn);
                 if (!mysqli_stmt_prepare($stmt, $sql)) {
                     header("location: ../import_teachers.php?error=stmtfailed");
@@ -302,6 +309,7 @@ function emptyInputDate($date)
 
 function getTeachers($conn)
 {
+    // get all teachers' info from the users table
     $sql = "SELECT `usersTitle`, `usersForename`, `usersSurname`, `usersStaffCode`, `usersSLT`
             FROM `users` WHERE `usersTeacher`=1 AND `usersEmail`<>'teacher';";
     $stmt = mysqli_stmt_init($conn);
@@ -330,10 +338,12 @@ function getTeachers($conn)
 
 function updateAbsences($conn, $date, $absentTeachers)
 {
+    // format date
     $day = substr($date, 0, 2);
     $month = substr($date, 3, 2);
     $year = substr($date, 6);
     $date = $year . "-" . $month . "-" . $day;
+    // delete all absences currently in table so that they can be replaced
     $sql = "DELETE FROM `absences` WHERE `absenceDate`='" . $date . "';";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -342,6 +352,7 @@ function updateAbsences($conn, $date, $absentTeachers)
     }
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    // insert absences as inputted
     foreach ($absentTeachers as $teacher) {
         $staffCode = substr($teacher, 0, 3);
         $sql = "INSERT INTO absences (staffCode, absenceDate) VALUES (?, ?);";
@@ -358,6 +369,7 @@ function updateAbsences($conn, $date, $absentTeachers)
 
 function getAbsences($conn, $date)
 {
+    // format date
     $day = substr($date, 0, 2);
     $month = substr($date, 3, 2);
     $year = substr($date, 6);
@@ -373,6 +385,7 @@ function getAbsences($conn, $date)
 
     $resultData = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
+    // get teacher's info for each one that is absent
     $absentTeachers = array();
     while ($row = mysqli_fetch_assoc($resultData)) {
         $teacher = array();
@@ -406,6 +419,7 @@ function getAbsences($conn, $date)
 
 function updateAbsentPeriods($conn, $date, $absentTeachers)
 {
+    // format date
     $day = substr($date, 0, 2);
     $month = substr($date, 3, 2);
     $year = substr($date, 6);
@@ -440,9 +454,11 @@ function getFreeTeachers($conn, $date)
     $date = $year . "-" . $month . "-" . $day;
     $date = new DateTime($date);
     $originalDate = $date;
+    // object-oriented methods to handle date
     $day = $originalDate->format('D');
     $date->modify("Monday this week");
     $formattedDate = $date->format('Y-m-d');
+    // check whether it is week A or B on timetable for date
     $sql = "SELECT `week` FROM `dates` WHERE `monday`=?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -458,7 +474,7 @@ function getFreeTeachers($conn, $date)
             FROM `users`, `lessons`
             WHERE `users`.`usersEmail` = `lessons`.`teacherEmail`
             AND `lessons`.`week` = ? AND `lessons`.`day` = ?
-            AND `lessons`.`classCode` = 'free';";
+            AND (`lessons`.`classCode` = 'free' OR `lessons`.`classCode` = 'COVER');";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../cover.php?error=stmtfailed");
@@ -489,6 +505,7 @@ function getAbsentLessons($conn, $absentTeachers, $week, $day)
         $staffCode = substr($teacher[0], -3);
         for ($period = 1; $period <= 6; $period++) {
             if ($teacher[$period] == 1) {
+                // cross-table parameterised sql
                 $sql = "SELECT `lessons`.`lessonID`, `lessons`.`classCode`,
                         `lessons`.`period`, `lessons`.`room`
                         FROM `users`, `lessons`
@@ -526,10 +543,12 @@ function getAbsentLessons($conn, $absentTeachers, $week, $day)
 
 function insertCovers($conn, $date, $matches)
 {
+    // format date
     $day = substr($date, 0, 2);
     $month = substr($date, 3, 2);
     $year = substr($date, 6);
     $date = $year . "-" . $month . "-" . $day;
+    // delete covers already set for that date to be replaced
     $sql = "DELETE FROM `covers` WHERE `coverDate`='" . $date . "';";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -571,6 +590,7 @@ function insertCovers($conn, $date, $matches)
 
 function getCovers($conn, $date)
 {
+    // format date
     $day = substr($date, 0, 2);
     $month = substr($date, 3, 2);
     $year = substr($date, 6);
@@ -589,6 +609,7 @@ function getCovers($conn, $date)
     $resultData = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
 
+    // return false if there is no cover set for that date
     if ($resultData->num_rows === 0) {
         return false;
     }
@@ -609,6 +630,7 @@ function getCovers($conn, $date)
 
 function updateSLT($conn, $SLT)
 {
+    // set all SLT fields to 0 so that they can be re-set
     $sql = "UPDATE `users` SET `usersSLT`=0;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
